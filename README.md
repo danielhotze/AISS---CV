@@ -12,16 +12,16 @@ A PPE detection project using Jetson Nano devices for the university course "Art
 ## Intro
 Short Introduction.
 
-## Application
+# Application
 General information about the application
 
-### App Requirements
+## App Requirements
 - Install Node.js and npm. (Recommendation: Use [nvm](https://www.freecodecamp.org/news/how-to-update-node-and-npm-to-the-latest-version/))
 - Install [MongoDB](https://www.mongodb.com/try/download/community) for the database
 - 
 
-## Jetson
+# Jetson
 Content of section 3
 
-### Jetson Requirements
+## Jetson Requirements
 What needs to be done to execute the model on a Jetson Nano Device?
