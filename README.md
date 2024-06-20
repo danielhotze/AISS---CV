@@ -3,10 +3,10 @@ A PPE detection project using Jetson Nano devices for the university course "Art
 
 - [AISS-CV](#aiss-cv)
   - [Intro](#intro)
-  - [Application](#application)
-    - [App Requirements](#app-requirements)
-  - [Jetson](#jetson)
-    - [Jetson Requirements](#jetson-requirements)
+- [Application](#application)
+  - [App Requirements](#app-requirements)
+- [Jetson](#jetson)
+  - [Jetson Requirements](#jetson-requirements)
 
 
 ## Intro
