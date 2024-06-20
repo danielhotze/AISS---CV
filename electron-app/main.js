@@ -1,6 +1,6 @@
 const { app, BrowserWindow } = require('electron');
 const mongoose = require('mongoose');
-const path = require('path');
+// const path = require('path');
 
 // Database Setup:
 mongoose.connect('mongodb://localhost:27017/mydatabase', {
