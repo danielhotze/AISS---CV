@@ -14,6 +14,18 @@
     "serve:ssr:electron-app": "node dist/electron-app/server/server.mjs",
     "electron": "ng build && electron ."
   },
+  "build": {
+    "appId": "edu.kit.aiss-cv.ppe-detection",
+    "mac": {
+      "icon": "assets/icons/favicon.icns"
+    },
+    "win": {
+      "icon": "assets/icons/favicon.ico"
+    },
+    "linux": {
+      "icon": "assets/icons/favicon.png"
+    }
+  },
   "private": true,
   "dependencies": {
     "@angular/animations": "^18.0.0",
