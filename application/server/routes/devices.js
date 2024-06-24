@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const Device = require('../data/device');
 
-// POST /devices - Neues Device hinzufügen
+// POST /devices - Insert a new Device
 router.post('/devices', async (req, res) => {
   try {
     const { id, name, ip, location, status } = req.body;
@@ -17,7 +17,7 @@ router.post('/devices', async (req, res) => {
   }
 });
 
-// GET /devices - Alle Devices abrufen
+// GET /devices - Request all Devices
 router.get('/devices', async (req, res) => {
   try {
     const devices = await Device.find();
@@ -28,7 +28,7 @@ router.get('/devices', async (req, res) => {
   }
 });
 
-// GET /devices/:id - Ein spezifisches Device abrufen
+// GET /devices/:id - Request a specific Device
 router.get('/devices/:id', async (req, res) => {
   const { id } = req.params;
   try {
@@ -43,7 +43,7 @@ router.get('/devices/:id', async (req, res) => {
   }
 });
 
-// DELETE /devices/:id - Device löschen
+// DELETE /devices/:id - Delete a specific Device
 router.delete('/devices/:id', async (req, res) => {
   const { id } = req.params;
   try {

@@ -11,6 +11,7 @@ const incidentSchema = new Schema({
   timestamp_start: { type: Date, required: true },
   timestamp_end: { type: Date },
   deviceID: { type: String, required: true },
+  incidentType: { type: String, required: true },
   images: [imageSchema]
 });
 

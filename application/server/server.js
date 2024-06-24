@@ -28,11 +28,6 @@ app.get('/', function (req, res) {
   res.send('The server is running!');
 });
 
-app.post('/incident', async (req, res) => {
-  const { timestamp, deviceId, image } = req.body;
-  await db.collection('incidents').insertOne({ timestamp, deviceId });
-})
-
 //Start Server:
 const server = app.listen(port, () => {
   process.stdout.write(`Server is running on http://localhost:${port}\n`);
@@ -41,8 +36,13 @@ const server = app.listen(port, () => {
 // Gracefully shut down the server
 process.on('SIGTERM', () => {
   process.stdout.write('SIGTERM signal received: closing HTTP server\n');
+  db.close();
   server.close(() => {
     process.stdout.write('Server closed successfully\n');
     process.exit(0); // Exit process when the server is closed
+    // db.close(() => {
+    //   process.stdout.write('Database closed successfully\n');
+    //   process.exit(0); // Exit process when the server is closed
+    // });
   });
 });

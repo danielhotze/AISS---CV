@@ -17,8 +17,8 @@ function createWindow() {
 }
 
 app.whenReady().then(() => {
+  // Run Server as a child_process
   serverProcess = spawn('node', ['server/server.js'], {
-    // stdio: 'inherit',
     shell: true
   });
 
@@ -38,12 +38,14 @@ app.whenReady().then(() => {
     console.log(`Server process exited with code ${code}`);
   });
 
+  // Create Electron Window
   createWindow();
 }).catch((error) => {
   console.error('App failed to be ready:', error);
 });
 
 app.on('before-quit', () => {
+  //When server is still running, initialize a graceful shutdown before closing the App
   if (serverProcess) {
     console.log('Killing server process');
     treeKill(serverProcess.pid, 'SIGTERM', (err) => {
