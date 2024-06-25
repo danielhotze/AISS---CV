@@ -1,6 +1,5 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const path = require('path');
 const deviceRoutes = require('./routes/devices');
 const incidentRoutes = require('./routes/incidents');
 
@@ -14,7 +13,7 @@ mongoose.connect('mongodb://localhost:27017/detectiondb', {
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 db.once('open', () => {
-  process.stdout.write('Connected to MongoDB database\n');
+  console.log('[Server: Connected to MongoDB database.]');
 });
 
 //Middleware:
@@ -29,20 +28,34 @@ app.get('/', function (req, res) {
 });
 
 //Start Server:
-const server = app.listen(port, () => {
-  process.stdout.write(`Server is running on http://localhost:${port}\n`);
+const serverInstance = app.listen(port, () => {
+  console.log(`[Server: Server is running on http://localhost:${port}]`);
 });
 
-// Gracefully shut down the server
+// Graceful shutdown function
+async function gracefulShutdown() {
+  console.log('[Server: Shutting down gracefully...]');
+  try {
+    await serverInstance.close();
+    await mongoose.disconnect();
+    console.log('[Server: HTTP server and MongoDB connection closed.]');
+    process.exit(0);
+  } catch (error) {
+    console.error(`[Server: Error during graceful shutdown: ${error}]`);
+    process.exit(1);
+  }
+}
+
+process.parentPort.once('message', (e) => {
+  const msg = e.data.message;
+  if (msg === 'shutdown') {
+    console.log('[Server: Shutdown message received.]');
+    gracefulShutdown();
+  }
+})
+
+// handle "kill" (signal terminate) being received -> perform shutdown
 process.on('SIGTERM', () => {
-  process.stdout.write('SIGTERM signal received: closing HTTP server\n');
-  db.close();
-  server.close(() => {
-    process.stdout.write('Server closed successfully\n');
-    process.exit(0); // Exit process when the server is closed
-    // db.close(() => {
-    //   process.stdout.write('Database closed successfully\n');
-    //   process.exit(0); // Exit process when the server is closed
-    // });
-  });
+  console.log('[Server: SIGTERM signal received: closing HTTP server.]');
+  gracefulShutdown();
 });

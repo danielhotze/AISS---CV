@@ -1,7 +1,5 @@
-const { app, BrowserWindow } = require('electron');
-const { spawn } = require('child_process');
+const { app, BrowserWindow, utilityProcess } = require('electron');
 const path = require('path');
-const treeKill = require('tree-kill');
 
 let serverProcess;
 
@@ -10,57 +8,49 @@ function createWindow() {
   const mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
+    webPreferences: {
+      preload: path.join(__dirname, 'preload.js')
+    },
     icon: path.join(__dirname, 'dist', 'application', 'browser', 'assets', 'icons', 'favicon.ico')
   });
+  // Open the DevTools.
+  // mainWindow.webContents.openDevTools();
 
   mainWindow.loadFile(path.join(__dirname, 'dist', 'application', 'browser', 'index.html'));
 }
 
 app.whenReady().then(() => {
-  // Run Server as a child_process
-  serverProcess = spawn('node', ['server/server.js'], {
-    shell: true
-  });
-
-  serverProcess.stdout.on('data', (data) => {
-    process.stdout.write(`Server: ${data}`);
-  });
-
-  serverProcess.stderr.on('data', (data) => {
-    process.stderr.write(`Server Error: ${data}`);
-  });
-
-  serverProcess.on('error', (data) => {
-    console.error(`Server Error: ${data}`);
-  });
-
-  serverProcess.on('close', (code) => {
-    console.log(`Server process exited with code ${code}`);
-  });
+  // Run Server as a utilityProcess
+  serverProcess = utilityProcess
+  .fork(path.join(__dirname, 'server', 'server.js'))
+  .on('spawn', () => console.log('Electron: [Spawned new server process...]'))
+  .on('message', (message) => console.log(`[Server: ${message}]`))
+  .on('exit', (code) => console.log(`Electron: [Server process exited with code ${code}]`));
 
   // Create Electron Window
   createWindow();
 }).catch((error) => {
-  console.error('App failed to be ready:', error);
-});
-
-app.on('before-quit', () => {
-  //When server is still running, initialize a graceful shutdown before closing the App
-  if (serverProcess) {
-    console.log('Killing server process');
-    treeKill(serverProcess.pid, 'SIGTERM', (err) => {
-      if (err) {
-        console.error('Failed to kill server process:', err);
-      } else {
-        console.log('Server process killed successfully');
-      }
-    });
-  }
+  console.error('Electron: [App failed to be ready:]', error);
 });
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
-    app.quit();
+    if (serverProcess) {
+      console.log('Electron: [Sending shutdown message to server...]');
+      serverProcess.postMessage({message: 'shutdown'});
+      serverProcess.on('exit', (code) => {
+        if (code === 1) {
+          console.log('Electron: [Trying to forcefully kill server process...]');
+          serverProcess.kill('SIGTERM');
+          app.quit();
+        } else {
+          app.quit();
+        }
+
+      });
+    } else {
+      app.quit();
+    }
   }
 });
 
