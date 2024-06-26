@@ -6,6 +6,9 @@
 /out-tsc
 /bazel-out
 
+# Detected Images
+/uploads
+
 # Node
 /node_modules
 npm-debug.log

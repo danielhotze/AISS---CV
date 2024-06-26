@@ -17,7 +17,8 @@ General information about the application
 
 ## App Requirements
 - Install Node.js and npm. (Recommendation: Use [nvm](https://www.freecodecamp.org/news/how-to-update-node-and-npm-to-the-latest-version/))
-- Install [MongoDB](https://www.mongodb.com/try/download/community) for the database
+- Download and Install [MongoDB Community Server](https://www.mongodb.com/try/download/community) for the database
+- Make sure that MongoDB is running on the standard port (27017) - for new installations no action should be required for this.
 - 
 
 # Jetson

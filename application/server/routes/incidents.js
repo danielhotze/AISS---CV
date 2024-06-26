@@ -5,15 +5,14 @@ const Incident = require('../data/incident');
 // POST /incidents - Create new incident
 router.post('/incidents', async (req, res) => {
   try {
-    const { id, timestamp, deviceID, incidentType, imageUrl } = req.body;
+    const { id, timestamp, deviceID, incidentType } = req.body;
 
     const incident = new Incident({
-      id,
+      id: id,
       timestamp_start: timestamp,
       timestamp_end: timestamp,
-      deviceID,
-      incidentType,
-      images: [{ timestamp, imageUrl }]
+      deviceID: deviceID,
+      incidentType: incidentType,
     });
 
     const savedIncident = await incident.save();
@@ -28,13 +27,12 @@ router.post('/incidents', async (req, res) => {
 router.put('/incidents/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const { timestamp, imageUrl } = req.body;
+    const { timestamp } = req.body;
 
     const incident = await Incident.findOneAndUpdate(
       { id },
       {
         $max: { timestamp_end: timestamp }, // Set timestamp_end to the new value
-        $push: { images: { timestamp, imageUrl } }
       },
       { new: true }
     );
