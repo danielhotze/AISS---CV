@@ -1,6 +1,9 @@
 const { app, BrowserWindow, utilityProcess } = require('electron');
 const path = require('path');
 
+// Prevent Squirrel.Window to launch the app multiple times during installation
+if (require('electron-squirrel-startup') === true) app.quit();
+
 let serverProcess;
 
 // Electron Setup:
