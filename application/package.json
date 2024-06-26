@@ -1,6 +1,6 @@
 {
   "name": "application",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "description": "Electron App acting as Frontend and Server for the AISS-CV PPE-Detection project",
   "main": "main.js",
   "author": "Daniel Hotze",
