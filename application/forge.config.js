@@ -5,7 +5,8 @@ const path = require('path');
 module.exports = {
   packagerConfig: {
     asar: true,
-    icon: './public/assets/icons/favicon'
+    icon: './public/assets/icons/favicon',
+    executableName: 'PPE-Detection'
   },
   rebuildConfig: {},
   makers: [

@@ -16,7 +16,7 @@
     "make": "electron-forge make",
     "publish": "electron-forge publish"
   },
-  "productName": "PPE Detection",
+  "productName": "PPE-Detection",
   "build": {
     "appId": "edu.kit.aiss-cv.ppe-detection",
     "mac": {

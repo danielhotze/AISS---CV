@@ -19,6 +19,8 @@ jobs:
       run: npm install
     - name: build
       run: npm run make
+    - name: Debugging - List files
+      run: ls -R out/PPE-Detection-linux-x64
 
   build_on_mac:
     runs-on: macos-latest
