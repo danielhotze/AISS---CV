@@ -12,8 +12,8 @@ jobs:
   publish_on_linux:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2       
-    - uses: actions/setup-node@master
+    - uses: actions/checkout@v4       
+    - uses: actions/setup-node@v4
       with:
         node-version: 22
         cache: "npm"
@@ -28,8 +28,8 @@ jobs:
   publish_on_mac:
     runs-on: macos-latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@master
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
       with:
         node-version: 22
         cache: "npm"
@@ -44,8 +44,8 @@ jobs:
   publish_on_win:
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v2       
-    - uses: actions/setup-node@master
+    - uses: actions/checkout@v4       
+    - uses: actions/setup-node@v4
       with:
         node-version: 22
         cache: "npm"
