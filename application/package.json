@@ -13,8 +13,10 @@
     "test": "ng test",
     "electron": "ng build && electron .",
     "package": "electron-forge package",
-    "make": "electron-forge make"
+    "make": "electron-forge make",
+    "publish": "electron-forge publish"
   },
+  "productName": "PPE Detection",
   "build": {
     "appId": "edu.kit.aiss-cv.ppe-detection",
     "mac": {
@@ -60,6 +62,7 @@
     "@electron-forge/maker-zip": "^7.4.0",
     "@electron-forge/plugin-auto-unpack-natives": "^7.4.0",
     "@electron-forge/plugin-fuses": "^7.4.0",
+    "@electron-forge/publisher-github": "^7.4.0",
     "@electron/fuses": "^1.8.0",
     "@types/jasmine": "~5.1.0",
     "electron": "^31.0.2",

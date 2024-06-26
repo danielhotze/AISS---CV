@@ -56,4 +56,16 @@ module.exports = {
       [FuseV1Options.OnlyLoadAppFromAsar]: true,
     }),
   ],
+  publishers: [
+    {
+      name: '@electron-forge/publisher-github',
+      config: {
+        repository: {
+          owner: 'danielhotze',
+          name: 'AISS-CV'
+        },
+        prerelease: true
+      }
+    }
+  ]
 };
