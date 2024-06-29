@@ -9,7 +9,7 @@ const incidentImageRoutes = require('./routes/incidentImages');
 const app = express();
 const port = 3000;
 
-// Database Setup:
+/******************************* Database Setup *******************************/
 mongoose.connect('mongodb://localhost:27017/detectiondb', {});
 
 const db = mongoose.connection;
@@ -18,10 +18,10 @@ db.once('open', () => {
   console.log('[Server: Connected to MongoDB database.]');
 });
 
-// Multer Setup:
+/******************************* Multer Setup *******************************/
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, './uploads')
+      cb(null, '/PPE-Detection_uploads')
     },
     filename: function (req, file, cb) {
       cb(null, file.originalname)
@@ -29,13 +29,12 @@ const storage = multer.diskStorage({
 })
 const upload = multer({ storage: storage })
 
-//Middleware:
+/******************************* Middleware *******************************/
 app.use(express.json());
-// app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-app.use('/uploads', express.static('uploads'));
+app.use('/PPE-Detection_uploads', express.static('uploads'));
 app.use(express.urlencoded({ extended: true }));
 
-//Routes:
+/******************************* Routes *******************************/
 app.use('/api', deviceRoutes);
 app.use('/api', incidentRoutes);
 app.use('/api', incidentImageRoutes(upload));
@@ -44,12 +43,16 @@ app.get('/', function (req, res) {
   res.send('The server is running!');
 });
 
-//Start Server:
+/******************************* Start Server *******************************/
 const serverInstance = app.listen(port, () => {
   console.log(`[Server: Server is running on http://localhost:${port}]`);
 });
 
-// Graceful shutdown function
+/******************************* Periodic Device Status Checks *******************************/
+// TODO
+
+
+/******************************* Graceful shutdown function *******************************/
 async function gracefulShutdown() {
   console.log('[Server: Shutting down gracefully...]');
   try {
