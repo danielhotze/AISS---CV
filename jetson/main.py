@@ -23,10 +23,12 @@ DEVICE_ID = 'device1' # how do we best configure this? Probably some setup over 
 # Incident Variables
 MAX_UNDETECTED_FRAMES = 5
 SKIP_IMAGE_UPLOAD_MOD = 5 # uploading every frame might be too much - only upload every x frames
+detections_counter = 0
+frames_without_detection = 0
 incident_uuid = None
 incident_active = False
 incident_type = None
-frames_without_detection = 0
+
 
 
 ######################################## LOGIC ########################################
@@ -74,13 +76,28 @@ while True:
   frame = get_frame_from_camera() 
   detection_result = detect_objects(frame)
 
-  if detection_result: # if some violation was detected
+  if detection_result: # if some ppe violation was detected
+    frames_without_detection = 0
     # for new incident or different detection type, create new incident?
     if (not incident_active) or detection_result != incident_type:
+      # setup new incident data
       incident_uuid = str(uuid.uuid4())
       timestamp = time.time()
       incident_active = True
       incident_type = detection_result
+      # send http post to server to create a new incident
+      send_create_incident(incident_id=incident_uuid, timestamp=timestamp, deviceID=DEVICE_ID, incidentType=incident_type)
     else:
       timestamp = time.time()
+      # send http put to server to update existing incident
+      send_update_incident(incident_uuid, timestamp)
+    if (detections_counter % SKIP_IMAGE_UPLOAD_MOD) == 0:
+      # every <SKIP_IMAGE_UPLOAD_MOD> images (or the first one), we send it to the server
+      send_upload_image() # insert image with detection (ideally with bounding boxes), incidentID, and timestamp
+    detections_counter += 1
+  else:
+    frames_without_detection += 1
+    # after a set amount of frames without detections, close the incident
+    if frames_without_detection > MAX_UNDETECTED_FRAMES:
+      incident_active = False
 
