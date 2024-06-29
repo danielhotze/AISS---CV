@@ -13,6 +13,8 @@ SERVER_API = 'http://' + SERVER_IP + ':3000/api'
 INCIDENT_CREATE_API = SERVER_API + '/incidents'
 IMAGE_UPLOAD_API = SERVER_API + '/incidents/image'
 
+
+
 # Device Settings
 #hostname = socket.gethostname()
 #device_ip = socket.gethostbyname(hostname) # option for dynamically getting the IP-Address
@@ -29,14 +31,36 @@ frames_without_detection = 0
 
 ######################################## LOGIC ########################################
 # Server requests
-def send_create_incident(id, timestamp):
-  i = 1
+def send_create_incident(incident_id, timestamp, deviceID, incidentType):
+  url = 'http://' + SERVER_IP + ':3000/api/incidents'
+  data = {
+    'incidentID': incident_id,
+    'timestamp': timestamp,
+    'deviceID': deviceID,
+    'incidentType': incident_type
+  }
+  response = requests.post(url, data=data)
+  return response.json()
 
-def send_update_incident():
-  i = 1
+def send_update_incident(incident_id, timestamp):
+  url = 'http://' + SERVER_IP + ':3000/api/incidents'
+  data = {
+    'incidentID': incident_id,
+    'timestamp': timestamp
+  }
+  response = requests.put(url, data=data)
+  return response.json()
 
-def send_upload_image():
-  i = 1
+def send_upload_image(image_path, incident_id, timestamp):
+    url = 'http://' + SERVER_IP + ':3000/api/upload'
+    files = {'image': open(image_path, 'rb')}
+    data = {
+        'incidentID': incident_id,
+        'timestamp': timestamp
+    }
+    response = requests.post(url, files=files, data=data)
+    return response.json()
+
 # Here Camera Logic - Get frame from camera (use cv2 or something)
 def get_frame_from_camera():
   return

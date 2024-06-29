@@ -3,6 +3,7 @@ const router = express.Router();
 const Incident = require('../data/incident');
 
 // POST /incidents - Create new incident
+// http://<server_ip>:3000/api/incidents
 router.post('/incidents', async (req, res) => {
   try {
     const { id, timestamp, deviceID, incidentType } = req.body;
@@ -24,6 +25,7 @@ router.post('/incidents', async (req, res) => {
 });
 
 // PUT /incidents - Update existing incident
+// http://<server_ip>:3000/api/incidents/:id
 router.put('/incidents/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -49,6 +51,7 @@ router.put('/incidents/:id', async (req, res) => {
 })
 
 // GET /incidents - Request all Incidents
+// http://<server_ip>:3000/api/incidents/
 router.get('/incidents', async (req, res) => {
   try {
     const incidents = await Incident.find();
@@ -60,6 +63,7 @@ router.get('/incidents', async (req, res) => {
 });
 
 // GET /incidents/:deviceID - Request all Incidents from a specific device
+// http://<server_ip>:3000/api/incidents/:deviceID
 router.get('/incidents/:deviceID', async (req, res) => {
   const { deviceID } = req.params;
   try {
