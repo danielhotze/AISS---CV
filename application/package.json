@@ -40,6 +40,7 @@
     "@angular/platform-browser": "^18.0.0",
     "@angular/platform-browser-dynamic": "^18.0.0",
     "@angular/router": "^18.0.0",
+    "axios": "^1.7.2",
     "child_process": "^1.0.2",
     "electron-squirrel-startup": "^1.0.1",
     "express": "^4.19.2",

@@ -1,1 +1,35 @@
 /* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+@font-face {
+  font-family: 'Roboto';
+  src: url(../public/assets/fonts/Roboto/Roboto-Regular.ttf) format('truetype');
+  /* src: url(application/browser/assets/fonts/Roboto/Roboto-Regular.ttf) format('truetype'); */
+  font-weight: 400;
+  font-style: normal;
+}
+
+:root {
+  --color-text-primary: #322A26;
+  --color-text-secondary: #7E7570;
+  --color-text-tertiary: #C5C0BD;
+
+  --color-green: #009682;
+  --color-green-dark: #013A41;
+  --color-green-lighter: #2AAD9C;
+
+  --color-surface: #F6FFFE;
+  --color-surface-elevated: #FFFFFF;
+
+  --color-red: #F3451E;
+
+  --border-radius: 16px;
+  --font-size-xs: 0.8rem;
+  --font-size-s: 1rem;
+  --font-size-m: 1.2rem;
+  --font-size-l: 1.6rem;
+  --font-size-xl: 2rem;
+
+  font-family: 'Roboto', sans-serif;
+  font-size: var(--font-size-s);
+}

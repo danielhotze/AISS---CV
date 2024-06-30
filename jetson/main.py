@@ -9,11 +9,6 @@ import uuid
 ######################################## VARIABLES ########################################
 # Server Settings
 SERVER_IP = 'localhost' # add flask API through which the server can tell the device its' IP
-SERVER_API = 'http://' + SERVER_IP + ':3000/api'
-INCIDENT_CREATE_API = SERVER_API + '/incidents'
-IMAGE_UPLOAD_API = SERVER_API + '/incidents/image'
-
-
 
 # Device Settings
 #hostname = socket.gethostname()
@@ -28,8 +23,6 @@ frames_without_detection = 0
 incident_uuid = None
 incident_active = False
 incident_type = None
-
-
 
 ######################################## LOGIC ########################################
 # Server requests
@@ -82,13 +75,13 @@ while True:
     if (not incident_active) or detection_result != incident_type:
       # setup new incident data
       incident_uuid = str(uuid.uuid4())
-      timestamp = time.time()
+      timestamp = time.time() * 1000 # time.time() returns seconds since epoch - javascript Date handles time in miliseconds since epoch
       incident_active = True
       incident_type = detection_result
       # send http post to server to create a new incident
       send_create_incident(incident_id=incident_uuid, timestamp=timestamp, deviceID=DEVICE_ID, incidentType=incident_type)
     else:
-      timestamp = time.time()
+      timestamp = time.time() * 1000
       # send http put to server to update existing incident
       send_update_incident(incident_uuid, timestamp)
     if (detections_counter % SKIP_IMAGE_UPLOAD_MOD) == 0:

@@ -25,6 +25,6 @@ def ping():
     SERVER_IP = request.remote_addr
   return '', 200
 
-
+# make sure that flask is running on port 5000
 if __name__ == '__main__':
   app.run(host='0.0.0.0', port=5000)

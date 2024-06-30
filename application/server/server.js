@@ -1,10 +1,12 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const multer = require('multer');
-const path = require('path');
+const axios = require('axios');
+
 const deviceRoutes = require('./routes/devices');
 const incidentRoutes = require('./routes/incidents');
 const incidentImageRoutes = require('./routes/incidentImages');
+const Device = require('./data/device');
 
 const app = express();
 const port = 3000;
@@ -49,8 +51,28 @@ const serverInstance = app.listen(port, () => {
 });
 
 /******************************* Periodic Device Status Checks *******************************/
-// TODO
+const checkDeviceStatus = async () => {
+  try {
+    const devices = await Device.find({ status: 'Active' });
+    for(const device of devices) {
+      try {
+        const response = await axios.get(`http://${device.ip}:5000/ping`, { timeout: 5000 });
+        if (response.status === 200) {
+          console.log(`Device ${device.ip} (${device.name}) is active.`);
+          res.json({ message: `Device ${device.ip} (${device.name}) is now active.`})
+        }
+      } catch (error) {
+        console.error(`Device ${device.name} is inactive. Error: ${error.message}`);
+        await Device.findOneAndUpdate({ id: device.id }, { status: 'Inactive' });
+      }
+    }
+  } catch (error) {
+    console.error('Error checking device statuses:', error);
+  }
+}
 
+// Every minute - check the status of all previously active devices.
+setInterval(checkDeviceStatus, 60000);
 
 /******************************* Graceful shutdown function *******************************/
 async function gracefulShutdown() {
