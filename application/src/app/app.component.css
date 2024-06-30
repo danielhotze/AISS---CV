@@ -1,0 +1,9 @@
+:host {
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+
+  display: grid;
+  grid-template-columns: 225px 1fr;
+  grid-template-rows: 100%;
+}

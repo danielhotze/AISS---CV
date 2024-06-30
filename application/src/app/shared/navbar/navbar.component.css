@@ -1,0 +1,39 @@
+:host {height: 100%;}
+:host nav {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: var(--color-surface-elevated);
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.5);
+}
+
+.title {
+  display: flex;
+  align-items: center;
+}
+.title h1 {
+  font-size: var(--font-size-l);
+  font-weight: 700;
+}
+.logo {
+  width: 75px;
+  height: 75px;
+  margin-right: 1rem;
+}
+.navbar_link {
+  color: var(--color-text-primary);
+  font-size: var(--font-size-m);
+  font-weight: 600;
+  text-decoration: none;
+  padding: .5rem 1rem;
+  border-radius: 8px;
+  margin: .25rem 0;
+}
+.navbar_link.active {
+  background-color: var(--color-green);
+  color: #fff;
+  box-shadow: 0 0 0 2px var(--color-green);
+}
+.navbar_link:not(.active):hover {
+  color: var(--color-green);
+}
