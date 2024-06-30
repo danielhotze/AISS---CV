@@ -32,4 +32,5 @@
 
   font-family: 'Roboto', sans-serif;
   font-size: var(--font-size-s);
+  background-color: var(--color-surface);
 }
