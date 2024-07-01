@@ -1,6 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const multer = require('multer');
+const fs = require('fs');
+const path = require('path');
 const axios = require('axios');
 
 const deviceRoutes = require('./routes/devices');
@@ -20,10 +22,18 @@ db.once('open', () => {
   console.log('[Server: Connected to MongoDB database.]');
 });
 
+/******************************* File-System Setup *******************************/
+// const uploadDir = path.join(__dirname, 'PPE-Detection_uploads');
+// let's just dump images into C:/PPE-Detection_uploads for now - not pretty but works fine
+const uploadDir = '/PPE-Detection_uploads';
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir);
+}
+
 /******************************* Multer Setup *******************************/
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, '/PPE-Detection_uploads')
+      cb(null, uploadDir)
     },
     filename: function (req, file, cb) {
       cb(null, file.originalname)
@@ -33,7 +43,7 @@ const upload = multer({ storage: storage })
 
 /******************************* Middleware *******************************/
 app.use(express.json());
-app.use('/PPE-Detection_uploads', express.static('uploads'));
+// app.use('/images', express.static('/PPE-Detection_uploads'));
 app.use(express.urlencoded({ extended: true }));
 
 /******************************* Routes *******************************/

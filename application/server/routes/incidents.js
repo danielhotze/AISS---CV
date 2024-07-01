@@ -10,8 +10,8 @@ router.post('/incidents', async (req, res) => {
 
     const incident = new Incident({
       id: id,
-      timestamp_start: timestamp,
-      timestamp_end: timestamp,
+      timestamp_start: new Date(timestamp),
+      timestamp_end: new Date(timestamp),
       deviceID: deviceID,
       incidentType: incidentType,
     });
@@ -34,7 +34,7 @@ router.put('/incidents/:id', async (req, res) => {
     const incident = await Incident.findOneAndUpdate(
       { id },
       {
-        $max: { timestamp_end: timestamp }, // Set timestamp_end to the new value
+        $max: { timestamp_end: new Date(timestamp) }, // Set timestamp_end to the new value
       },
       { new: true }
     );

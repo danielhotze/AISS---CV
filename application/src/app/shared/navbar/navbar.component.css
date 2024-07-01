@@ -1,10 +1,17 @@
 :host {height: 100%;}
-:host nav {
+nav {
+  position: relative;
   display: flex;
   flex-direction: column;
   height: 100%;
+  width: 225px;
   background-color: var(--color-surface-elevated);
   box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.5);
+  transition: all ease-in-out;
+}
+nav.closed {
+  width: 100px;
+  align-items: center;
 }
 
 .title {
@@ -20,11 +27,15 @@
   height: 75px;
   margin-right: 1rem;
 }
+nav.closed .logo {
+  margin-right: 0;
+}
 .navbar_link {
   color: var(--color-text-primary);
   font-size: var(--font-size-m);
   font-weight: 600;
   text-decoration: none;
+  letter-spacing: .2rem;
   padding: .5rem 1rem;
   border-radius: 8px;
   margin: .25rem 0;
@@ -36,4 +47,10 @@
 }
 .navbar_link:not(.active):hover {
   color: var(--color-green);
+}
+
+.open_btn, .close_btn {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
 }

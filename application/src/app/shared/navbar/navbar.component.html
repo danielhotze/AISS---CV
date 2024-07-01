@@ -1,9 +1,33 @@
-<nav class="navbar">
-  <div class="title">
-    <img class="logo" src="assets/images/logo.svg" alt="Logo img">
-    <h1>AISS - CV</h1>
-  </div>
-  <a class="navbar_link" [routerLink]="['/overview']" routerLinkActive="active">Overview</a>
-  <a class="navbar_link" [routerLink]="['/incidents']" routerLinkActive="active">Incidents</a>
-  <a class="navbar_link" [routerLink]="['/devices']" routerLinkActive="active">Devices</a>
-</nav>
+@if (nav_expanded) {
+  <nav class="navbar">
+    <div class="title">
+      <img class="logo" src="assets/images/logo.svg" alt="Logo img">
+      <h1>AISS - CV</h1>
+    </div>
+    <a class="navbar_link" [routerLink]="['/overview']" routerLinkActive="active">Overview</a>
+    <a class="navbar_link" [routerLink]="['/incidents']" routerLinkActive="active">Incidents</a>
+    <a class="navbar_link" [routerLink]="['/devices']" routerLinkActive="active">Devices</a>
+    <button class="close_btn" (click)="toggleExpand()">
+      <mat-icon>chevron_left</mat-icon>
+    </button>
+  </nav>
+} @else {
+  <nav class="navbar closed">
+    <div class="title">
+      <img class="logo" src="assets/images/logo.svg" alt="Logo img">
+    </div>
+    <a class="navbar_link" [routerLink]="['/overview']" routerLinkActive="active">
+      <mat-icon>home</mat-icon>
+    </a>
+    <a class="navbar_link" [routerLink]="['/incidents']" routerLinkActive="active">
+      <mat-icon>warning_amber</mat-icon>
+    </a>
+    <a class="navbar_link" [routerLink]="['/devices']" routerLinkActive="active">
+      <mat-icon>memory</mat-icon>
+    </a>
+    <button class="open_btn" (click)="toggleExpand()">
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+  </nav>
+}
+

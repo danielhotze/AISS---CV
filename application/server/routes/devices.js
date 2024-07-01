@@ -76,7 +76,6 @@ router.get('/devices/connect/:deviceId', async (req, res) => {
     console.error('Error trying to ping the device:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
-
-})
+});
 
 module.exports = router;
