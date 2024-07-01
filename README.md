@@ -26,3 +26,4 @@ Content of section 3
 
 ## Jetson Requirements
 What needs to be done to execute the model on a Jetson Nano Device?
+- Set a static IP address on the Jetson Nano Devices (should be different for each jetson)___[A](https://hub.shinobi.video/articles/view/Z0kXCFxbQvrHcnm), [B](https://robo.fish/wiki/index.php?title=Nvidia_Jetson), [C](https://stackoverflow.com/questions/66384210/how-te-set-a-static-ip-for-a-jetson-nano)
