@@ -14,4 +14,33 @@
 }
 .stats {
   grid-area: stats;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.stats_item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  box-shadow: 0 0 8px 0 rgba(0, 0, 0, .25);
+  width: 100px;
+  padding: .5rem;
+  margin-bottom: 1rem;
+}
+.stats_item h4 {
+  font-size: var(--font-size-s);
+  color: var(--color-text-tertiary);
+  font-weight: 500;
+  text-align: center;
+}
+.stats_item span {
+  font-size: var(--font-size-xl);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  text-align: center;
+}
+.stats_item.stats_incident span {
+  color: var(--color-red);
 }

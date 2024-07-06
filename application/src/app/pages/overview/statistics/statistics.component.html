@@ -3,12 +3,25 @@
 </div>
 <div class="chart">
   @if (chartReady) {
-    <apx-chart [series]="chartOptions.series!" [chart]="chartOptions.chart!" [xaxis]="chartOptions.xaxis!"
-      [yaxis]="chartOptions.yaxis!" [stroke]="chartOptions.stroke!"></apx-chart>
-  }@else {
+    <apx-chart [series]="chartOptions.series!" [chart]="chartOptions.chart!"
+      [xaxis]="chartOptions.xaxis!" [yaxis]="chartOptions.yaxis!"
+      [stroke]="chartOptions.stroke!" [markers]="chartOptions.markers!"
+      [tooltip]="chartOptions.tooltip!"></apx-chart>
+  } @else {
     <mat-spinner></mat-spinner>
   }
 </div>
 <div class="stats">
-  Stats
+  <div class="stats_item stats_locations">
+    <h4>Locations</h4>
+    <span>todo</span>
+  </div>
+  <div class="stats_item stats_devices">
+    <h4>Devices</h4>
+    <span>{{filterDevices.length}}</span>
+  </div>
+  <div class="stats_item stats_incident">
+    <h4>Incidents</h4>
+    <span>{{filterIncidents.length}}</span>
+  </div>
 </div>

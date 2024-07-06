@@ -5,7 +5,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { Device } from '../../../core/models/device.model';
 import { Incident } from '../../../core/models/incident.model';
 import moment from 'moment';
-import { ApexChart, ApexAxisChartSeries, ApexXAxis, NgApexchartsModule, ApexYAxis, ApexStroke, ChartComponent } from 'ng-apexcharts';
+import { ApexChart, ApexAxisChartSeries, ApexXAxis, NgApexchartsModule, ApexYAxis, ApexStroke, ChartComponent, ApexMarkers, ApexDataLabels, ApexTooltip } from 'ng-apexcharts';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 export type ChartOptions = {
@@ -14,6 +14,8 @@ export type ChartOptions = {
   xaxis: ApexXAxis;
   yaxis: ApexYAxis;
   stroke: ApexStroke;
+  markers: ApexMarkers;
+  tooltip: ApexTooltip;
 };
 
 @Component({
@@ -45,25 +47,43 @@ export class StatisticsComponent implements OnInit, OnDestroy {
       },
       animations: {
         enabled: false
-      }
+      },
+
     },
     xaxis: {
-      type: 'datetime'
+      type: 'datetime',
     },
     yaxis: {
       title: {
-        text: 'Number of Incidents'
+        text: 'Number of Incidents',
+        style: {
+          fontSize: '16px'
+        },
+        offsetX: 10
       },
       labels: {
         formatter: function(val) {
-          return Math.round(val).toString(); // Runde die Y-Achse auf ganze Zahlen
-        }
+          return (val % 1 === 0) ? Math.round(val).toString() : ''; // Runde die Y-Achse auf ganze Zahlen
+        },
       }
     },
     stroke: {
       curve: 'smooth',
       width: 4,
-      // colors: ['#009682']
+      colors: ['#F3451E']
+    },
+    markers: {
+      colors: ['#F3451E'],
+      size: 6,
+      hover: {
+        size: 8
+      }
+    },
+    tooltip: {
+      marker: {
+        show: true,
+        fillColors: ['#F3451E'],
+      }
     }
   };
 
@@ -80,9 +100,6 @@ export class StatisticsComponent implements OnInit, OnDestroy {
     ).subscribe((devices) => {
       // todo
     });
-
-    // Handle incidents:
-    // this.updateChart(this.incidentService.incidents, 'hour');
 
     this.incidentService.incidents$.pipe(
       takeUntil(this.destroyed$)
@@ -134,18 +151,20 @@ export class StatisticsComponent implements OnInit, OnDestroy {
   }
 
   filterIncidents(incidents: Incident[]): Incident[] {
+    this.filteredIncidents = [...incidents];
     // filter date
 
     // filter device
 
     // filter zone
-    return incidents;
+    return this.filteredIncidents;
   }
 
   // Devices:
   filterDevices(devices: Device[]): Device[] {
+    this.filteredDevices = [...devices];
     // filter zone
     // filter ?
-    return devices;
+    return this.filteredDevices;
   }
 }
