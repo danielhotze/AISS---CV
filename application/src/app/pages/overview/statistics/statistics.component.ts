@@ -140,7 +140,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
   }
 
   updateChart(incidents: Incident[], interval: 'hour' | 'day') {
-    const series = this.aggregateIncidents(incidents, interval);
+    const series = this.aggregateIncidents(this.filterIncidents(incidents), interval);
     this.chartOptions.series = [{
       name: 'Incidents',
       data: series
