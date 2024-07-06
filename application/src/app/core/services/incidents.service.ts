@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, of, ReplaySubject, Subscription } from 'rxjs';
+import { BehaviorSubject, catchError, Subscription } from 'rxjs';
 import { Incident } from '../models/incident.model';
 import { environment } from '../../../environments/environment';
 import { handleError } from '../utility/http-error-handler';
@@ -9,8 +9,7 @@ import { handleError } from '../utility/http-error-handler';
   providedIn: 'root'
 })
 export class IncidentsService {
-  public incidents$: ReplaySubject<Incident[]> = new ReplaySubject(1);
-  private _incidents: Incident[] = [];
+  public incidents$ = new BehaviorSubject<Incident[]>([]);
 
   private _incidentsSubscription?: Subscription;
 
@@ -20,15 +19,16 @@ export class IncidentsService {
 
   // DATA
   get incidents() {
-    return this._incidents;
+    return this.incidents$.value;
   }
   set incidents(newIncidents: Incident[]) {
-    this._incidents = newIncidents;
-    this.incidents$.next(this._incidents);
+    this.incidents$.next(newIncidents);
   }
 
   // API
   loadIncidents() {
+    console.log('Called loadIncidents');
+
     if (this._incidentsSubscription) {
       this._incidentsSubscription.unsubscribe();
     }
@@ -36,7 +36,7 @@ export class IncidentsService {
     this._incidentsSubscription = this.http.get<Incident[]>(requestUrl).pipe(
       catchError(handleError)
     ).subscribe((incidentsResponse) => {
-      this.incidents = incidentsResponse;
+      this.incidents$.next(incidentsResponse);
       console.log('Received incidents:', this.incidents);
     })
   }

@@ -1,0 +1,17 @@
+:host {
+  display: grid;
+  grid-template-areas:
+    'filter filter'
+    'chart stats';
+  grid-template-columns: 80% 20%;
+}
+
+.filter {
+  grid-area: filter;
+}
+.chart {
+  grid-area: chart;
+}
+.stats {
+  grid-area: stats;
+}

@@ -1,0 +1,9 @@
+:host {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+:host app-card {
+  margin-bottom: 1rem;
+}

@@ -1,0 +1,28 @@
+:host {
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, .5);
+  border-radius: var(--border-radius);
+  background-color: var(--color-surface-elevated);
+  width: 100%;
+  padding: .5rem;
+}
+
+.card_title {
+  font-size: var(--font-size-m);
+  margin: 0;
+  margin-bottom: .5rem;
+  display: flex;
+  align-items: center;
+}
+.card_title.green {
+  color: var(--color-green);
+}
+.card_title.red {
+  color: var(--color-red);
+}
+.card_title .mat-icon {
+  margin-right: .5rem;
+}
+
+.card_content {
+  width: 100%;
+}

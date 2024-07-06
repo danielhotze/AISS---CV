@@ -1,6 +1,6 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, of, ReplaySubject, Subscription, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, Subscription } from 'rxjs';
 import { Device } from '../models/device.model';
 import { environment } from '../../../environments/environment';
 import { handleError } from '../utility/http-error-handler';
@@ -9,8 +9,7 @@ import { handleError } from '../utility/http-error-handler';
   providedIn: 'root'
 })
 export class DevicesService {
-  public devices$: ReplaySubject<Device[]> = new ReplaySubject(1);
-  private _devices: Device[] = [];
+  public devices$ = new BehaviorSubject<Device[]>([]);
 
   private _devicesSubscription?: Subscription;
   private _connectSubscription?: Subscription;
@@ -23,11 +22,10 @@ export class DevicesService {
 
   // DATA
   get devices(): Device[] {
-    return this._devices;
+    return this.devices$.value;
   }
   set devices(newDevices: Device[]) {
-    this._devices = newDevices;
-    this.devices$.next(this._devices);
+    this.devices$.next(newDevices);
   }
 
   // API
@@ -39,7 +37,7 @@ export class DevicesService {
     this._devicesSubscription = this.http.get<Device[]>(requestUrl).pipe(
       catchError(handleError)
     ).subscribe((deviceResponse) => {
-      this.devices = deviceResponse;
+      this.devices$.next(deviceResponse);
       console.log('Received devices:', this.devices);
     })
   }

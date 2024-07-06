@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, ReplaySubject, Subscription } from 'rxjs';
+import { BehaviorSubject, catchError, Subscription } from 'rxjs';
 import { Image } from '../models/image.model';
 import { environment } from '../../../environments/environment';
 import { handleError } from '../utility/http-error-handler';
@@ -9,8 +9,7 @@ import { handleError } from '../utility/http-error-handler';
   providedIn: 'root'
 })
 export class ImagesService {
-  public imageData$: ReplaySubject<Image[]> = new ReplaySubject(1);
-  private _imageData: Image[] = [];
+  public imageData$ = new BehaviorSubject<Image[]>([]);
 
   private _imageSubscription?: Subscription;
 
@@ -20,11 +19,10 @@ export class ImagesService {
 
   // DATA
   get images(): Image[] {
-    return this._imageData;
+    return this.imageData$.value;
   }
   set images(newImages: Image[]) {
-    this._imageData = newImages;
-    this.imageData$.next(this._imageData);
+    this.imageData$.next(newImages);
   }
 
   // API
@@ -36,7 +34,7 @@ export class ImagesService {
     this._imageSubscription = this.http.get<Image[]>(requestUrl).pipe(
       catchError(handleError)
     ).subscribe((imagesResponse) => {
-      this.images = imagesResponse;
+      this.imageData$.next(imagesResponse);
       console.log('Received images:', this.images);
     })
   }

@@ -1,0 +1,9 @@
+<h2 class="card_title" [ngClass]="{'green': color === 'green', 'red': color === 'red'}">
+  @if (icon) {
+    <mat-icon>{{icon}}</mat-icon>
+  }
+  {{title}}
+</h2>
+<div class="card_content">
+  <ng-content></ng-content>
+</div>

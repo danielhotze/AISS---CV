@@ -22,14 +22,20 @@ export class AppComponent implements OnInit {
   }
 
   private startApiInterval() {
+    this.makeApiCalls();
+    // request new data every 30000 ms
     setInterval(() => {
-      try {
-        this.api.requestDevices();
-        this.api.requestIncidents();
-        this.api.requestImages();
-      } catch (error) {
-        console.error('Something went wrong in the api interval', error);
-      }
+      this.makeApiCalls();
     }, 30000);
+  }
+
+  private makeApiCalls() {
+    try {
+      this.api.requestDevices();
+      this.api.requestIncidents();
+      this.api.requestImages();
+    } catch (error) {
+      console.error('Something went wrong in the api interval', error);
+    }
   }
 }

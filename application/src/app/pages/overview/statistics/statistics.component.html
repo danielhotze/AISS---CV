@@ -1,0 +1,14 @@
+<div class="filter">
+  Filter
+</div>
+<div class="chart">
+  @if (chartReady) {
+    <apx-chart [series]="chartOptions.series!" [chart]="chartOptions.chart!" [xaxis]="chartOptions.xaxis!"
+      [yaxis]="chartOptions.yaxis!" [stroke]="chartOptions.stroke!"></apx-chart>
+  }@else {
+    <mat-spinner></mat-spinner>
+  }
+</div>
+<div class="stats">
+  Stats
+</div>
