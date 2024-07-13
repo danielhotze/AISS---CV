@@ -1,4 +1,7 @@
-:host {height: 100%;}
+:host {
+  grid-area: nav;
+  height: 100%;
+}
 nav {
   position: relative;
   display: flex;

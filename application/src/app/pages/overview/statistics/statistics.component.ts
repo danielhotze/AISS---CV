@@ -33,7 +33,8 @@ export class StatisticsComponent implements OnInit, OnDestroy {
 
   public chartReady = false;
   public filteredIncidents: Incident[] = [];
-  public filteredDevices: Device[] = [];
+  public devicesCount = 0;
+
   public chartOptions: Partial<ChartOptions> = {
     series: [{
       name: 'Incidents',
@@ -98,7 +99,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
     this.devicesService.devices$.pipe(
       takeUntil(this.destroyed$)
     ).subscribe((devices) => {
-      // todo
+      this.devicesCount = devices.length;
     });
 
     this.incidentService.incidents$.pipe(
@@ -119,8 +120,6 @@ export class StatisticsComponent implements OnInit, OnDestroy {
     }
     const grouped: { [key: string]: number } = {};
     const dateFormat = interval === 'hour' ? 'YYYY-MM-DD HH:00:00' : 'YYYY-MM-DD';
-
-    incidents.sort((a, b) => new Date(a.timestamp_start).getTime() - new Date(b.timestamp_start).getTime());
 
     incidents.forEach(incident => {
       const key = moment(incident.timestamp_start).format(dateFormat);
@@ -158,13 +157,5 @@ export class StatisticsComponent implements OnInit, OnDestroy {
 
     // filter zone
     return this.filteredIncidents;
-  }
-
-  // Devices:
-  filterDevices(devices: Device[]): Device[] {
-    this.filteredDevices = [...devices];
-    // filter zone
-    // filter ?
-    return this.filteredDevices;
   }
 }

@@ -1,0 +1,54 @@
+:host {
+  display: flex;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  margin-bottom: 1rem;
+}
+:host::-webkit-scrollbar {
+  height: 8px;
+  padding: 0 .5rem;
+}
+:host::-webkit-scrollbar-track {
+  background: rgba(243, 69, 30, .2);
+  padding: 0 .5rem;
+}
+:host::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  background: var(--color-red);
+}
+
+.incident_item {
+  border: 2px solid var(--color-red);
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, .35);
+  border-radius: 8px;
+  font-size: var(--font-size-s);
+  width: fit-content;
+  margin-right: 1rem;
+  padding: .5rem;
+
+  display: flex;
+}
+.incident_item:hover {
+  cursor: pointer;
+}
+
+.incident_content {
+  display: flex;
+  flex-direction: column;
+  width: max-content;
+  color: var(--color-text-secondary);
+}
+.incident_content h5 {
+  font-size: var(--font-size-s);
+  color: var(--color-text-primary);
+}
+
+.incident_icons {
+  margin-left: 1rem;
+  width: fit-content;
+  display: flex;
+}
+.img_vest, .img_helmet {
+  width: 50px;
+  height: 50px;
+}

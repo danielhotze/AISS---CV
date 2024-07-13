@@ -1,1 +1,23 @@
-<p>incidents-overview works!</p>
+@for (incident of incidents; track incident.id) {
+  <div class="incident_item" (click)="selectIncidentAndNavigate(incident.id)">
+    <div class="incident_content">
+      <h5>ID: {{incident.id}}</h5>
+      <div class="incident_device">
+        Device: {{incident.deviceID}}
+      </div>
+      <div class="incident_time">
+        <span>{{incident.timestamp_start.getDate()}}.{{incident.timestamp_start.getMonth() + 1}}.{{incident.timestamp_start.getFullYear()}}</span>
+      </div>
+    </div>
+    <div class="incident_icons">
+      @if (incident.incidentType === 'person_without_safety') {
+        <img class="img_helmet" src="assets/images/safety_helmet.svg" alt="Helmet img">
+        <img class="img_vest" src="assets/images/safety_vest-svg" alt="Vest img">
+      } @else if (incident.incidentType === 'person_only_with_jacket') {
+        <img class="img_vest" src="assets/images/safety_vest-svg" alt="Vest img">
+      } @else if (incident.incidentType === 'person_only_with_helmet') {
+        <img class="img_helmet" src="assets/images/safety_helmet.svg" alt="Helmet img">
+      }
+    </div>
+  </div>
+}

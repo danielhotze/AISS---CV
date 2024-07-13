@@ -4,6 +4,12 @@
   width: 100vw;
 
   display: grid;
+  grid-template-areas: 'nav content';
   grid-template-columns: auto 1fr;
   grid-template-rows: 100%;
+}
+.content {
+  grid-area: content;
+  overflow: auto;
+  max-width: 100%;
 }

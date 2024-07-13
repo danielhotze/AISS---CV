@@ -10,6 +10,7 @@ import { handleError } from '../utility/http-error-handler';
 })
 export class IncidentsService {
   public incidents$ = new BehaviorSubject<Incident[]>([]);
+  public selectedIncident$ = new BehaviorSubject<string>('');
 
   private _incidentsSubscription?: Subscription;
 
@@ -25,6 +26,13 @@ export class IncidentsService {
     this.incidents$.next(newIncidents);
   }
 
+  get selectedIncident() {
+    return this.selectedIncident$.value;
+  }
+  set selectedIncident(incidentID: string) {
+    this.selectedIncident$.next(incidentID);
+  }
+
   // API
   loadIncidents() {
     console.log('Called loadIncidents');
@@ -36,6 +44,12 @@ export class IncidentsService {
     this._incidentsSubscription = this.http.get<Incident[]>(requestUrl).pipe(
       catchError(handleError)
     ).subscribe((incidentsResponse) => {
+      incidentsResponse.forEach(incident => {
+        incident.timestamp_start = new Date(incident.timestamp_start);
+        incident.timestamp_end = new Date(incident.timestamp_end);
+      });
+      incidentsResponse.sort((a, b) => b.timestamp_start.getTime() - a.timestamp_start.getTime());
+
       this.incidents$.next(incidentsResponse);
       console.log('Received incidents:', this.incidents);
     })

@@ -2,6 +2,7 @@
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 :host app-card {
