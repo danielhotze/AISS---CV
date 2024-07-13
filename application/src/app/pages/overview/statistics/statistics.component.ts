@@ -115,29 +115,6 @@ export class StatisticsComponent implements OnInit, OnDestroy {
     this.destroyed$.complete();
   }
 
-  // private aggregateIncidents(incidents: Incident[], interval: 'hour' | 'day'): { x: Date, y: number }[] {
-  //   if (incidents.length === 0) {
-  //     return [];
-  //   }
-  //   const grouped: { [key: string]: number } = {};
-  //   const dateFormat = interval === 'hour' ? 'YYYY-MM-DD HH:00:00' : 'YYYY-MM-DD';
-
-  //   incidents.forEach(incident => {
-  //     const key = moment(incident.timestamp_start).format(dateFormat);
-  //     if (!grouped[key]) {
-  //       grouped[key] = 0;
-  //     }
-  //     grouped[key]++;
-  //   });
-
-  //   // Umwandeln in ApexCharts-kompatibles Format
-  //   const series = Object.keys(grouped).map(date => ({
-  //     x: new Date(date),
-  //     y: grouped[date]
-  //   }));
-
-  //   return series;
-  // }
   private aggregateIncidents(incidents: Incident[], interval: 'hour' | 'day'): { x: Date, y: number }[] {
     if (incidents.length === 0) {
       return [];
