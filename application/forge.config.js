@@ -22,7 +22,7 @@ module.exports = {
       platforms: ['darwin'],
     },
     {
-      name: '@electron-forge/maker-deb',
+      name: '@electron-forge/maker-flatpak',
       config: {
         options: {
           icon: './public/assets/icons/favicon.png'
