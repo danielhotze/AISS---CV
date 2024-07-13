@@ -26,4 +26,5 @@
 
 .card_content {
   width: 100%;
+  overflow: visible;
 }

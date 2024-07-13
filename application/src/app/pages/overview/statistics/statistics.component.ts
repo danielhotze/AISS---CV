@@ -44,7 +44,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
       type: 'line',
       height: 300,
       zoom: {
-        enabled: false
+        enabled: true
       },
       animations: {
         enabled: false
@@ -55,12 +55,13 @@ export class StatisticsComponent implements OnInit, OnDestroy {
       type: 'datetime',
     },
     yaxis: {
+      min: 0,
       title: {
         text: 'Number of Incidents',
         style: {
           fontSize: '16px'
         },
-        offsetX: 10
+        offsetX: 10,
       },
       labels: {
         formatter: function(val) {
@@ -105,7 +106,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
     this.incidentService.incidents$.pipe(
       takeUntil(this.destroyed$)
     ).subscribe((incidents) => {
-      this.updateChart(incidents, 'hour');
+      this.updateChart(incidents, 'day');
     });
   }
 
@@ -114,10 +115,34 @@ export class StatisticsComponent implements OnInit, OnDestroy {
     this.destroyed$.complete();
   }
 
+  // private aggregateIncidents(incidents: Incident[], interval: 'hour' | 'day'): { x: Date, y: number }[] {
+  //   if (incidents.length === 0) {
+  //     return [];
+  //   }
+  //   const grouped: { [key: string]: number } = {};
+  //   const dateFormat = interval === 'hour' ? 'YYYY-MM-DD HH:00:00' : 'YYYY-MM-DD';
+
+  //   incidents.forEach(incident => {
+  //     const key = moment(incident.timestamp_start).format(dateFormat);
+  //     if (!grouped[key]) {
+  //       grouped[key] = 0;
+  //     }
+  //     grouped[key]++;
+  //   });
+
+  //   // Umwandeln in ApexCharts-kompatibles Format
+  //   const series = Object.keys(grouped).map(date => ({
+  //     x: new Date(date),
+  //     y: grouped[date]
+  //   }));
+
+  //   return series;
+  // }
   private aggregateIncidents(incidents: Incident[], interval: 'hour' | 'day'): { x: Date, y: number }[] {
     if (incidents.length === 0) {
       return [];
     }
+
     const grouped: { [key: string]: number } = {};
     const dateFormat = interval === 'hour' ? 'YYYY-MM-DD HH:00:00' : 'YYYY-MM-DD';
 
@@ -129,14 +154,30 @@ export class StatisticsComponent implements OnInit, OnDestroy {
       grouped[key]++;
     });
 
-    // Umwandeln in ApexCharts-kompatibles Format
-    const series = Object.keys(grouped).map(date => ({
-      x: new Date(date),
-      y: grouped[date]
-    }));
+    // Determine the startpoint of the incidents and the current date
+    const startDate = moment(Math.min(...incidents.map(incident => +new Date(incident.timestamp_start))));
+    const endDate = moment();
+
+    // Iterate over each interval and fill missing dates with 0
+    const series = [];
+    let iterateDate = startDate.clone();
+
+    while (iterateDate.isSameOrBefore(endDate, 'day')) {
+      const key = iterateDate.format(dateFormat);
+      series.push({
+        x: new Date(iterateDate.toISOString()),
+        y: grouped[key] || 0
+      });
+
+      if (interval === 'hour') {
+        iterateDate.add(1, 'hour');
+      } else {
+        iterateDate.add(1, 'day');
+      }
+    }
 
     return series;
-  }
+}
 
   updateChart(incidents: Incident[], interval: 'hour' | 'day') {
     const series = this.aggregateIncidents(this.filterIncidents(incidents), interval);

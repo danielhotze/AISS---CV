@@ -4,5 +4,5 @@ export interface Device {
   name: string,
   ip: string,
   location: string,
-  status: string
+  status: 'Active' | 'Inactive'
 }

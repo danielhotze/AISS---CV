@@ -1,1 +1,14 @@
-<p>devices-overview works!</p>
+@for (device of devices; track device.id) {
+  <div class="device_item">
+    <div class="device_img">
+      <img class="img_jetson" src="assets/images/jetson_device.png" alt="Jetson Nano img">
+    </div>
+    <div class="device_content">
+      <h5>{{device.name}}</h5>
+      <div>ID: <span>{{device.id}}</span></div>
+      <div>IP: <span>{{device.ip}}</span></div>
+      <div>Location: <span>{{device.location}}</span></div>
+      <div [ngClass]="device.status === 'Active' ? 'active' : 'inactive'">Status: <span>{{device.status}}</span></div>
+    </div>
+  </div>
+}

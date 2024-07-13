@@ -10,6 +10,7 @@ import { handleError } from '../utility/http-error-handler';
 })
 export class DevicesService {
   public devices$ = new BehaviorSubject<Device[]>([]);
+  public selectedDevice$ = new BehaviorSubject<string>('');
 
   private _devicesSubscription?: Subscription;
   private _connectSubscription?: Subscription;
@@ -26,6 +27,13 @@ export class DevicesService {
   }
   set devices(newDevices: Device[]) {
     this.devices$.next(newDevices);
+  }
+
+  get selectedDeviceID() {
+    return this.selectedDevice$.value;
+  }
+  set selectedDeviceID(deviceID: string) {
+    this.selectedDevice$.next(deviceID);
   }
 
   // API

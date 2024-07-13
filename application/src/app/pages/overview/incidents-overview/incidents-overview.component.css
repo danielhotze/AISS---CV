@@ -1,8 +1,9 @@
 :host {
   display: flex;
-  overflow-x: scroll;
-  overflow-y: hidden;
-  margin-bottom: 1rem;
+  gap: 1rem;
+  overflow: visible;
+  overflow-x: auto;
+  padding: 0.75rem;
 }
 :host::-webkit-scrollbar {
   height: 8px;
@@ -11,6 +12,7 @@
 :host::-webkit-scrollbar-track {
   background: rgba(243, 69, 30, .2);
   padding: 0 .5rem;
+  border-radius: 8px;
 }
 :host::-webkit-scrollbar-thumb {
   border-radius: 8px;
@@ -23,13 +25,13 @@
   border-radius: 8px;
   font-size: var(--font-size-s);
   width: fit-content;
-  margin-right: 1rem;
-  padding: .5rem;
+  padding: .5rem .75rem;
 
   display: flex;
 }
 .incident_item:hover {
   cursor: pointer;
+  outline: 2px solid var(--color-red);
 }
 
 .incident_content {
