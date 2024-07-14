@@ -28,7 +28,7 @@ export class DevicesAddComponent {
       ip: '',
       name: '',
       location: '',
-      status: 'Inactive'
+      status: 'Active'
     }
   }
 
