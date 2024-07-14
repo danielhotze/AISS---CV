@@ -18,12 +18,7 @@
         <div class="device_content-col">
           <div>Incidents: <span>{{deviceData.incidents.length}}</span></div>
           <div [ngClass]="deviceData.device.status === 'Active' ? 'active' : 'inactive'">Status: <span>{{deviceData.device.status}}</span></div>
-          @if (deviceData.device.status === 'Inactive') {
-          <button class="device_connect" (click)="connectDevice(deviceData.device.id)">
-            <span>Connect</span>
-            <mat-icon>sync_alt</mat-icon>
-          </button>
-          }
+          <div>Location: <span>{{deviceData.device.location}}</span></div>
         </div>
       </div>
 
@@ -32,6 +27,12 @@
           <span>Delete</span>
           <mat-icon>delete</mat-icon>
         </button>
+        @if (deviceData.device.status === 'Inactive') {
+        <button class="device_action-btn device_connect" (click)="connectDevice(deviceData.device.id)">
+          <span>Connect</span>
+          <mat-icon>sync_alt</mat-icon>
+        </button>
+        }
         <button class="device_action-btn device_edit" >
           <span>Edit</span>
           <mat-icon>edit</mat-icon>

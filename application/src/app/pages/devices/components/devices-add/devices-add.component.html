@@ -1,10 +1,39 @@
 <h2>
-  <span>Add Device</span>
-  <mat-icon>add</mat-icon>
+  <span>Add a new Device</span>
 </h2>
 <div class="device_add-form">
-  test
+  <div class="form_item form_item-id">
+    <span>ID: </span>
+    <span>{{newDevice.id}}</span>
+  </div>
+
+  <mat-form-field class="form_item form_item-name">
+    <mat-label>Name</mat-label>
+    <input matInput [(ngModel)]="newDevice.name">
+  </mat-form-field>
+
+  <mat-form-field class="form_item form_item-location">
+    <mat-label>Location</mat-label>
+    <input matInput [(ngModel)]="newDevice.location" placeholder="Set Location">
+  </mat-form-field>
+
+  <mat-form-field class="form_item form_item-ip">
+    <mat-label>IP</mat-label>
+    <input matInput [(ngModel)]="newDevice.ip" placeholder="x.x.x.x">
+  </mat-form-field>
+
+  <div class="validation_error">
+    {{validationError}}
+  </div>
+
 </div>
 <div class="device_add-buttons">
-
+  <button class="btn_add" (click)="validateAndAddDevice()">
+    Add
+    <mat-icon>add</mat-icon>
+  </button>
+  <button class="btn_reset" (click)="resetNewDevice()">
+    Reset
+    <mat-icon>sync</mat-icon>
+  </button>
 </div>

@@ -8,12 +8,14 @@
   grid-template-areas:
     "title title"
     "form buttons";
+  grid-template-columns: 1fr auto;
 }
 
 :host h2 {
   grid-area: title;
   font-size: var(--font-size-m);
   font-weight: 600;
+  margin-bottom: .5rem;
 }
 
 :host .mat-icon {
@@ -23,8 +25,68 @@
 
 .device_add-form {
   grid-area: form;
+  display: grid;
+  grid-template-areas:
+  "id id id"
+  "name location ip"
+  "error error error";
+  gap: .5rem;
+}
+.form_item-id {
+  grid-area: id;
+}
+.form_item-name {
+  grid-area: name;
+}
+.form_item-ip {
+  grid-area: ip;
+}
+.form_item-location {
+  grid-area: location;
+}
+.validation_error {
+  grid-area: error;
+  color: var(--color-red);
+  font-size: var(--font-size-s);
 }
 
 .device_add-buttons {
   grid-area: buttons;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 0 .5rem;
+}
+.device_add-buttons button {
+  font-size: var(--font-size-m);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  padding: .25rem 1rem;
+  margin-bottom: .5rem;
+  border-radius: 8px;
+}
+.device_add-buttons button:hover {
+  cursor: pointer;
+}
+.device_add-buttons button .mat-icon {
+  font-size: var(--font-size-m);
+  width: var(--font-size-m);
+  height: var(--font-size-m);
+}
+.btn_add {
+  border: 1.5px solid var(--color-text-primary);
+  color: var(--color-text-primary);
+}
+.btn_add:hover {
+  outline: 1.5px solid var(--color-text-primary);
+}
+.btn_reset {
+  border: 1.5px solid var(--color-text-tertiary);
+  color: var(--color-text-tertiary);
+}
+.btn_reset:hover {
+  outline: 1.5px solid var(--color-text-tertiary);
 }
