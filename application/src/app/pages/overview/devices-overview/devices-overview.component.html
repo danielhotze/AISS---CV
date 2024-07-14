@@ -1,5 +1,5 @@
 @for (device of devices; track device.id) {
-  <div class="device_item">
+  <div class="device_item" (click)="selectDeviceAndNavigate(device.id)">
     <div class="device_img">
       <img class="img_jetson" src="assets/images/jetson_device.png" alt="Jetson Nano img">
     </div>

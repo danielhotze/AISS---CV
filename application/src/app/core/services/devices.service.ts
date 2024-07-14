@@ -1,9 +1,9 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, Subscription } from 'rxjs';
 import { Device } from '../models/device.model';
 import { environment } from '../../../environments/environment';
-import { handleError } from '../utility/http-error-handler';
+import { ErrorHandlerService } from './error-handler.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +18,8 @@ export class DevicesService {
   private _deleteDeviceSubscription?: Subscription;
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private errorHandler: ErrorHandlerService
   ) { }
 
   // DATA
@@ -43,7 +44,7 @@ export class DevicesService {
     }
     const requestUrl = environment.api.devices_url;
     this._devicesSubscription = this.http.get<Device[]>(requestUrl).pipe(
-      catchError(handleError)
+      catchError((error: HttpErrorResponse) => this.errorHandler.handleError(error, 'An error occured while loading the devices.'))
     ).subscribe((deviceResponse) => {
       this.devices$.next(deviceResponse);
       console.log('Received devices:', this.devices);
@@ -56,7 +57,7 @@ export class DevicesService {
     }
     const requestUrl = `${environment.api.devices_url}/${deviceId}`;
     this._deleteDeviceSubscription = this.http.delete(requestUrl).pipe(
-      catchError(handleError)
+      catchError((error: HttpErrorResponse) => this.errorHandler.handleError(error, 'Something went wrong trying to delete the device.'))
     ).subscribe((deleteResponse: any) => {
       if (deleteResponse.message) {
         console.log(deleteResponse.message);
@@ -72,7 +73,7 @@ export class DevicesService {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     const requestUrl = environment.api.devices_url;
     this._addDeviceSubscription = this.http.post<Device>(requestUrl, device, {headers}).pipe(
-      catchError(handleError)
+      catchError((error: HttpErrorResponse) => this.errorHandler.handleError(error, 'Something went wrong when trying to add the device.'))
     ).subscribe((addResponse) => {
       console.log(addResponse);
       this.loadDevices();
@@ -85,7 +86,7 @@ export class DevicesService {
     }
     const requestUrl = environment.api.device_connect_url(deviceId);
     this._connectSubscription = this.http.get(requestUrl).pipe(
-      catchError(handleError)
+      catchError((error: HttpErrorResponse) => this.errorHandler.handleError(error, 'Connection to device was unsuccessful.'))
     ).subscribe((connectResponse: any) => {
       if (connectResponse.message) {
         console.log(connectResponse.message);

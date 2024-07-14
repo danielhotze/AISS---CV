@@ -1,1 +1,42 @@
-<p>devices works!</p>
+<div class="device_add-container">
+  <app-devices-add (addDevice)="onAddDevice($event)" />
+</div>
+
+<div class="devices_list">
+  @for (deviceData of devicesData; track $index) {
+    <div class="device">
+      <div class="device_img">
+        <img class="img_jetson" src="assets/images/jetson_device.png" alt="Jetson Nano img">
+      </div>
+
+      <div class="device_content">
+        <div class="device_content-col">
+          <div>Name: <span>{{deviceData.device.name}}</span></div>
+          <div>ID: <span>{{deviceData.device.id}}</span></div>
+          <div>IP: <span>{{deviceData.device.ip}}</span></div>
+        </div>
+        <div class="device_content-col">
+          <div>Incidents: <span>{{deviceData.incidents.length}}</span></div>
+          <div [ngClass]="deviceData.device.status === 'Active' ? 'active' : 'inactive'">Status: <span>{{deviceData.device.status}}</span></div>
+          @if (deviceData.device.status === 'Inactive') {
+          <button class="device_connect" (click)="connectDevice(deviceData.device.id)">
+            <span>Connect</span>
+            <mat-icon>sync_alt</mat-icon>
+          </button>
+          }
+        </div>
+      </div>
+
+      <div class="device_actions">
+        <button class="device_action-btn device_delete" (click)="deleteDevice(deviceData.device.id)">
+          <span>Delete</span>
+          <mat-icon>delete</mat-icon>
+        </button>
+        <button class="device_action-btn device_edit" >
+          <span>Edit</span>
+          <mat-icon>edit</mat-icon>
+        </button>
+      </div>
+    </div>
+  }
+</div>

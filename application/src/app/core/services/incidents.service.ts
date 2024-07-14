@@ -1,9 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, Subscription } from 'rxjs';
 import { Incident } from '../models/incident.model';
 import { environment } from '../../../environments/environment';
-import { handleError } from '../utility/http-error-handler';
+import { ErrorHandlerService } from './error-handler.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,8 @@ export class IncidentsService {
   private _incidentsSubscription?: Subscription;
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private errorHandler: ErrorHandlerService
   ) { }
 
   // DATA
@@ -42,7 +43,7 @@ export class IncidentsService {
     }
     const requestUrl = environment.api.incidents_url;
     this._incidentsSubscription = this.http.get<Incident[]>(requestUrl).pipe(
-      catchError(handleError)
+      catchError((error: HttpErrorResponse) => this.errorHandler.handleError(error, 'An error occured while trying to load incident data.'))
     ).subscribe((incidentsResponse) => {
       incidentsResponse.forEach(incident => {
         incident.timestamp_start = new Date(incident.timestamp_start);

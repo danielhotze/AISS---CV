@@ -1,0 +1,100 @@
+:host {
+  padding: .5rem;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  grid-template-columns: 1fr;
+}
+.device_add-container {
+  padding: 1rem;
+}
+
+.devices_list {
+  display: flex;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 1rem;
+}
+.device {
+  background-color: var(--color-surface-elevated);
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, .35);
+  display: flex;
+  gap: 1rem;
+  width: fit-content;
+  border-radius: 8px;
+  padding: .5rem 1rem;
+  font-size: var(--font-size-s);
+  color: var(--color-text-tertiary);
+  font-weight: 500;
+}
+.device_img img {
+  width: 100px;
+}
+.device_content {
+  display: flex;
+  gap: .75rem;
+}
+.device_content .device_content-col {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+.device_content-col span {
+  color: var(--color-text-primary);
+  font-weight: 600;
+}
+
+.device_content .active span {
+  color: var(--color-green);
+}
+.device_content .inactive span {
+  color: var(--color-red);
+}
+
+.device_actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: .25rem;
+}
+.device_action-btn, .device_connect {
+  font-size: var(--font-size-m);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  padding: .25rem 1rem;
+  border-radius: 8px;
+}
+.device_action-btn:hover, .device_connect:hover {
+  cursor: pointer;
+}
+.device_edit {
+  border: 1.5px solid var(--color-text-secondary);
+  color: var(--color-text-secondary);
+}
+.device_edit:hover {
+  outline: 1.5px solid var(--color-text-secondary);
+}
+.device_delete {
+  border: 1.5px solid var(--color-red);
+  color: var(--color-red);
+}
+.device_delete:hover {
+  outline: 1.5px solid var(--color-red);
+}
+.device_connect {
+  font-size: var(--font-size-s);
+  border: 1.5px solid var(--color-text-tertiary);
+  color: var(--color-text-tertiary);
+}
+.device_connect:hover {
+  font-size: var(--font-size-s);
+  outline: 1.5px solid var(--color-text-tertiary);
+}
+.device_connect span {
+  font-size: var(--font-size-s);
+  color: var(--color-text-tertiary);
+}
