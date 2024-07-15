@@ -2,8 +2,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { Device } from '../../../../core/models/device.model';
 import { FormsModule } from '@angular/forms';
-import {MatInputModule} from '@angular/material/input';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { DevicesService } from '../../../../core/services/devices.service';
 
 @Component({
@@ -32,26 +32,26 @@ export class DevicesAddComponent {
     }
   }
 
-  private checkValidity(): boolean {
+  private checkValidity(device: Device): boolean {
     const ipv4Pattern = /^(\d{1,3}\.){3}\d{1,3}$/;
     const ipv6Pattern = /^([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$/;
-    if (!ipv4Pattern.test(this.newDevice.ip) && !ipv6Pattern.test(this.newDevice.ip)) {
+    if (!ipv4Pattern.test(device.ip) && !ipv6Pattern.test(device.ip)) {
       this.validationError = 'Device IP is not in valid ipv4/ipv6 format.';
       return false;
     }
-    if (this.deviceService.devices.find(d => d.ip === this.newDevice.ip)) {
+    if (this.deviceService.devices.find(d => d.ip === device.ip)) {
       this.validationError = 'A device with this IP address already exists.';
       return false;
     }
-    if (this.deviceService.devices.find(d => d.name === this.newDevice.name)) {
+    if (this.deviceService.devices.find(d => d.name === device.name)) {
       this.validationError = 'A device with this name already exists.';
       return false;
     }
-    if (!(this.newDevice.name.length > 0)) {
+    if (!(device.name.length > 0)) {
       this.validationError = 'Device needs a name.';
       return false;
     }
-    if (!(this.newDevice.location.length > 0)) {
+    if (!(device.location.length > 0)) {
       this.validationError = 'Device needs a location.';
       return false;
     }
@@ -60,7 +60,7 @@ export class DevicesAddComponent {
   }
 
   public validateAndAddDevice() {
-    if (!this.checkValidity()) {
+    if (!this.checkValidity(this.newDevice)) {
       console.log('Cannot add device. Invalid device data.');
       return;
     }

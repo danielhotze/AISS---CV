@@ -1,0 +1,88 @@
+:host {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(2px);
+  background-color: rgba(0, 0, 0, .2);
+}
+
+.edit_modal {
+  width: 500px;
+  background-color: var(--color-surface-elevated);
+  border-radius: 16px;
+  padding: 1rem;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  display: grid;
+  grid-template-areas:
+    "title title"
+    "id id"
+    "inputs actions"
+    "error error";
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto auto 1fr auto;
+}
+.edit_modal > h2 {
+  grid-area: title;
+  font-size: var(--font-size-m);
+  color: var(--color-text-primary);
+}
+.edit_modal > p {
+  grid-area: id;
+  font-size: var(--font-size-s);
+  color: var(--color-text-tertiary);
+  margin-bottom: 1rem;
+}
+.edit_inputs {
+  grid-area: inputs;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  padding-right: 1rem;
+  padding-bottom: 1rem;
+}
+.edit_actions {
+  grid-area: actions;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-bottom: 1rem;
+}
+.edit_error {
+  grid-area: error;
+  font-size: var(--font-size-s);
+  color: var(--color-red);
+}
+.edit_item {
+  display: grid;
+  grid-template-columns: 20% 80%;
+}
+
+.edit_confirm, .edit_cancel {
+  background: transparent;
+  border-radius: 8px;
+  font-size: var(--font-size-s);
+  padding: .25rem 1rem;
+}
+.edit_confirm {
+  border: 1.5px solid var(--color-green);
+  color: var(--color-green);
+}
+.edit_confirm:hover {
+  outline: 1.5px solid var(--color-green);
+  cursor: pointer;
+}
+
+.edit_cancel {
+  border: 1.5px solid var(--color-red);
+  color: var(--color-red);
+}
+.edit_cancel:hover {
+  outline: 1.5px solid var(--color-red);
+  cursor: pointer;
+}

@@ -10,11 +10,12 @@ import { ErrorHandlerService } from './error-handler.service';
 })
 export class DevicesService {
   public devices$ = new BehaviorSubject<Device[]>([]);
-  public selectedDevice$ = new BehaviorSubject<string>('');
+  public selectedDeviceID$ = new BehaviorSubject<string | undefined>(undefined);
 
   private _devicesSubscription?: Subscription;
   private _connectSubscription?: Subscription;
   private _addDeviceSubscription?: Subscription;
+  private _updateDeviceSubscription?: Subscription;
   private _deleteDeviceSubscription?: Subscription;
 
   constructor(
@@ -31,10 +32,10 @@ export class DevicesService {
   }
 
   get selectedDeviceID() {
-    return this.selectedDevice$.value;
+    return this.selectedDeviceID$.value;
   }
-  set selectedDeviceID(deviceID: string) {
-    this.selectedDevice$.next(deviceID);
+  set selectedDeviceID(deviceID: string | undefined) {
+    this.selectedDeviceID$.next(deviceID);
   }
 
   // API
@@ -77,7 +78,21 @@ export class DevicesService {
     ).subscribe((addResponse) => {
       console.log(addResponse);
       this.loadDevices();
-    })
+    });
+  }
+
+  updateDevice(device: Device) {
+    if (this._updateDeviceSubscription) {
+      this._updateDeviceSubscription.unsubscribe();
+    }
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const requestUrl = `${environment.api.devices_url}/${device.id}`;
+    this._updateDeviceSubscription = this.http.put<Device>(requestUrl, device, {headers}).pipe(
+      catchError((error: HttpErrorResponse) => this.errorHandler.handleError(error, 'Something went wrong when trying to update the device.'))
+    ).subscribe((updateResponse) => {
+      console.log(updateResponse);
+      this.loadDevices();
+    });
   }
 
   connectToDevice(deviceId: string) {

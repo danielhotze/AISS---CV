@@ -78,4 +78,24 @@ router.get('/devices/connect/:deviceId', async (req, res) => {
   }
 });
 
+// PUT /devices/:deviceId - Update a specific Device
+router.put('/devices/:deviceId', async (req, res) => {
+  const { deviceId } = req.params;
+  const updatedDeviceData = req.body;
+  try {
+    const updatedDevice = await Device.findOneAndUpdate(
+      { id: deviceId },
+      updatedDeviceData,
+      { new: true, runValidators: true } // returns the modified document and runs schema validators
+    );
+    if (!updatedDevice) {
+      return res.status(404).json({ error: 'Device not found' });
+    }
+    res.json(updatedDevice);
+  } catch (error) {
+    console.error('Error updating device:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 module.exports = router;

@@ -1,0 +1,29 @@
+<div class="edit_modal">
+  <h2>Edit Device</h2>
+  <p>{{device.id}}</p>
+  <div class="edit_inputs">
+    <div class="edit_item">
+      <label for="edit_name">Name: </label>
+      <input id="edit_name" type="text" [(ngModel)]="device.name" >
+    </div>
+    <div class="edit_item">
+      <label for="edit_location">Location: </label>
+      <input id="edit_location" type="text" [(ngModel)]="device.location">
+    </div>
+    <div class="edit_item">
+      <label for="edit_ip">IP: </label>
+      <input id="edit_ip" type="text" [(ngModel)]="device.ip">
+    </div>
+  </div>
+  <div class="edit_actions">
+    <button class="edit_confirm" (click)="validateEdit()">
+      Confirm
+    </button>
+    <button class="edit_cancel" (click)="close.emit()">
+      Cancel
+    </button>
+  </div>
+  <div class="edit_error">
+    {{validationError}}
+  </div>
+</div>

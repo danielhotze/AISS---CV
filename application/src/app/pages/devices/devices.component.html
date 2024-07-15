@@ -33,7 +33,7 @@
           <mat-icon>sync_alt</mat-icon>
         </button>
         }
-        <button class="device_action-btn device_edit" >
+        <button class="device_action-btn device_edit" (click)="selectDevice(deviceData.device.id)">
           <span>Edit</span>
           <mat-icon>edit</mat-icon>
         </button>
@@ -41,3 +41,7 @@
     </div>
   }
 </div>
+
+@if (editDevice) {
+  <app-devices-edit [device]="editDevice" (close)="this.closeEdit()" (edit)="this.edit($event)" />
+}
