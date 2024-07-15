@@ -61,7 +61,7 @@ export class DevicesComponent implements OnInit, OnDestroy {
   }
 
   deleteDevice(deviceID: string) {
-    if (confirm(`You are about to delete the device ${this.deviceService.devices.find(d => d.id === deviceID)!.name}`)) {
+    if (confirm(`You are about to delete the device "${this.deviceService.devices.find(d => d.id === deviceID)!.name}"`)) {
       this.deviceService.deleteDevice(deviceID);
     }
   }

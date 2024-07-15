@@ -1,0 +1,35 @@
+@for (item of incidents; track $index) {
+  <div class="incident_item">
+    <div class="incident_content">
+      <p class="incident-id">ID: <span>{{item.incident.id}}</span></p>
+      @if (item.device) {
+      <div class="incident-device">
+        <div>Device: <span>{{item.device.name}}</span></div>
+        <div>Device IP: <span>{{item.device.ip}}</span></div>
+      </div>
+      } @else {
+      <p class="incident-device">[deleted device]</p>
+      }
+      <div class="incident-time">
+        <div>Start: <span>{{item.incident.timestamp_start.getDate()}}.{{item.incident.timestamp_start.getMonth() +
+            1}}.{{item.incident.timestamp_start.getFullYear()}} -
+            {{item.incident.timestamp_start.getHours()}}:{{item.incident.timestamp_start.getMinutes()}}:{{item.incident.timestamp_start.getSeconds()}}</span></div>
+        <div>End: <span>{{item.incident.timestamp_end.getDate()}}.{{item.incident.timestamp_end.getMonth() +
+            1}}.{{item.incident.timestamp_end.getFullYear()}} -
+            {{item.incident.timestamp_end.getHours()}}:{{item.incident.timestamp_end.getMinutes()}}:{{item.incident.timestamp_end.getSeconds()}}</span></div>
+      </div>
+      <p class="incident-type">Type: <span>{{item.incident.incidentType}}</span></p>
+      <p class="incident-images">Images: <span>{{item.images.length}}</span></p>
+    </div>
+    <div class="incident_icons">
+      @if (item.incident.incidentType === 'person_without_safety') {
+      <img class="img_helmet" src="assets/images/safety_helmet.svg" alt="Helmet img">
+      <img class="img_vest" src="assets/images/safety_vest.svg" alt="Vest img">
+      } @else if (item.incident.incidentType === 'person_only_with_jacket') {
+      <img class="img_vest" src="assets/images/safety_vest.svg" alt="Vest img">
+      } @else if (item.incident.incidentType === 'person_only_with_helmet') {
+      <img class="img_helmet" src="assets/images/safety_helmet.svg" alt="Helmet img">
+      }
+    </div>
+  </div>
+}

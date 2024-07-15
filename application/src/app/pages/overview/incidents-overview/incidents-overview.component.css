@@ -25,9 +25,9 @@
   border-radius: 8px;
   font-size: var(--font-size-s);
   width: fit-content;
-  padding: .5rem .75rem;
-
-  display: flex;
+  padding: .5rem 1rem;
+  display: grid;
+  grid-template-columns: 1fr auto;
 }
 .incident_item:hover {
   cursor: pointer;

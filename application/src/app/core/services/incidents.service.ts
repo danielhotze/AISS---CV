@@ -10,7 +10,7 @@ import { ErrorHandlerService } from './error-handler.service';
 })
 export class IncidentsService {
   public incidents$ = new BehaviorSubject<Incident[]>([]);
-  public selectedIncident$ = new BehaviorSubject<string>('');
+  public selectedIncident$ = new BehaviorSubject<string | undefined>(undefined);
 
   private _incidentsSubscription?: Subscription;
 
@@ -30,7 +30,7 @@ export class IncidentsService {
   get selectedIncident() {
     return this.selectedIncident$.value;
   }
-  set selectedIncident(incidentID: string) {
+  set selectedIncident(incidentID: string | undefined) {
     this.selectedIncident$.next(incidentID);
   }
 

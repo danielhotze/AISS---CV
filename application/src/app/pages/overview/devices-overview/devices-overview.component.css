@@ -21,7 +21,7 @@
 .device_item {
   box-shadow: 0 2px 10px 0 rgba(0, 0, 0, .35);
   border-radius: 8px;
-  padding: .5rem .75rem;
+  padding: .5rem 1rem;
 
   font-size: var(--font-size-s);
   display: flex;

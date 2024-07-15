@@ -1,0 +1,53 @@
+:host {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.incident_item {
+  width: 700px;
+  max-width: 100%;
+  /* border: 2px solid var(--color-red); */
+  background-color: var(--color-surface-elevated);
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, .35);
+  border-radius: 8px;
+  font-size: var(--font-size-s);
+  padding: .5rem 1.5rem;
+  display: grid;
+  grid-template-columns: 1fr auto;
+}
+.incident_item:hover {
+  cursor: pointer;
+  outline: 2px solid var(--color-red);
+}
+
+.incident_content {
+  display: flex;
+  flex-direction: column;
+  font-weight: 500;
+  color: var(--color-text-tertiary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.incident_content span {
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+.incident-device, .incident-time {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  gap: 1rem;
+}
+
+.incident_icons {
+  width: fit-content;
+  display: flex;
+}
+.incident_icons img {
+  width: 75px;
+  height: 75px;
+}
