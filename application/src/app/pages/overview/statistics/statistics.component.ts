@@ -70,7 +70,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
       }
     },
     stroke: {
-      curve: 'smooth',
+      curve: 'stepline',
       width: 4,
       colors: ['#F3451E']
     },
