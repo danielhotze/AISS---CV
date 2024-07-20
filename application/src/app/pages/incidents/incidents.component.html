@@ -1,4 +1,4 @@
-<app-selected-incident [incident]="selectedIncident" />
+<app-selected-incident [selected]="selectedIncident" />
 <app-incidents-list [incidents]="incidentData"
   [selectedIncident]="selectedIncident ? selectedIncident.incident.id : undefined"
   (select)="selectIncident($event)" />

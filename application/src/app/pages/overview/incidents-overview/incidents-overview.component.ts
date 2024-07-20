@@ -3,6 +3,7 @@ import { IncidentsService } from '../../../core/services/incidents.service';
 import { Subject, takeUntil } from 'rxjs';
 import { Incident } from '../../../core/models/incident.model';
 import { Router } from '@angular/router';
+import { formatDateTime } from '../../../core/utility/date-format.util';
 
 @Component({
   selector: 'app-incidents-overview',
@@ -36,5 +37,9 @@ export class IncidentsOverviewComponent implements OnInit, OnDestroy {
   selectIncidentAndNavigate(incidentID: string) {
     this.incidentService.selectedIncident = incidentID;
     this.router.navigateByUrl('/incidents');
+  }
+
+  format(date: Date): string {
+    return formatDateTime(date);
   }
 }

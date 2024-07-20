@@ -3,6 +3,7 @@ import { Incident } from '../../../../core/models/incident.model';
 import { Device } from '../../../../core/models/device.model';
 import { Image } from '../../../../core/models/image.model';
 import { NgClass } from '@angular/common';
+import { formatDateTime } from '../../../../core/utility/date-format.util';
 
 @Component({
   selector: 'app-incidents-list',
@@ -16,5 +17,9 @@ export class IncidentsListComponent {
   @Input() selectedIncident: string | undefined;
 
   @Output() select: EventEmitter<string> = new EventEmitter();
+
+  format(date: Date): string {
+    return formatDateTime(date);
+  }
 
 }

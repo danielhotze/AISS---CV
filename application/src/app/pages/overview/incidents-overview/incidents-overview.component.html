@@ -6,7 +6,7 @@
         Device: {{incident.deviceID}}
       </div>
       <div class="incident_time">
-        <span>{{incident.timestamp_start.getDate()}}.{{incident.timestamp_start.getMonth() + 1}}.{{incident.timestamp_start.getFullYear()}}</span>
+        <span>{{format(incident.timestamp_end)}}</span>
       </div>
     </div>
     <div class="incident_icons">

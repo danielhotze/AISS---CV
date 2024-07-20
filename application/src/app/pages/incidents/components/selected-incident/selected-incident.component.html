@@ -1,9 +1,10 @@
-@if (incident) {
-  <div class="image_carousel" [ngClass]="{'no_image': incident.images.length === 0}">
-    @if (incident.images.length === 0) {
+@if (selected) {
+  <!-- Simple image carousel setup with forward/backward buttons -->
+  <div class="image_carousel" [ngClass]="{'no_image': selected.images.length === 0}">
+    @if (selected.images.length === 0) {
       <div>There are no images for this incident.</div>
     } @else {
-      <img [src]="image_folder + incident.images[imageIndex].name" alt="Incident Image">
+      <img [src]="image_folder + selected.images[imageIndex].name" alt="Incident Image">
 
       <button class="arrow_left" (click)="prevImage()">
         <mat-icon>arrow_back</mat-icon>
@@ -13,13 +14,22 @@
       </button>
 
       <div class="image_index">
-        {{imageIndex + 1}} / {{incident.images.length}}
+        {{imageIndex + 1}} / {{selected.images.length}}
       </div>
     }
   </div>
 
+  <!-- Display content and actions for the selected incident -->
   <div class="incident_content">
-
+    <p><span>ID:</span> {{selected.incident.id}}</p>
+    <p><span>Start:</span> {{format(selected.incident.timestamp_start)}}</p>
+    <p><span>End:</span> {{format(selected.incident.timestamp_end)}}</p>
+    <p class="incident_type"><span>Type:</span> {{selected.incident.incidentType}}</p>
+    @if (selected.device) {
+      <br>
+      <p><span>Device:</span> {{selected.device.name}}</p>
+      <p><span>Location:</span> {{selected.device.location}}</p>
+    }
   </div>
 } @else {
   <div>No incident selected.</div>

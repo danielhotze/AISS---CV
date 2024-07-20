@@ -49,7 +49,7 @@ export class IncidentsService {
         incident.timestamp_start = new Date(incident.timestamp_start);
         incident.timestamp_end = new Date(incident.timestamp_end);
       });
-      incidentsResponse.sort((a, b) => b.timestamp_start.getTime() - a.timestamp_start.getTime());
+      incidentsResponse.sort((a, b) => b.timestamp_end.getTime() - a.timestamp_end.getTime());
 
       this.incidents$.next(incidentsResponse);
       console.log('Received incidents:', this.incidents);

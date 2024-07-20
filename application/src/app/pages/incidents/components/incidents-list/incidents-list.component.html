@@ -12,12 +12,8 @@
       <p class="incident-device">[deleted device]</p>
       }
       <div class="incident-time">
-        <div>Start: <span>{{item.incident.timestamp_start.getDate()}}.{{item.incident.timestamp_start.getMonth() +
-            1}}.{{item.incident.timestamp_start.getFullYear()}} -
-            {{item.incident.timestamp_start.getHours()}}:{{item.incident.timestamp_start.getMinutes()}}:{{item.incident.timestamp_start.getSeconds()}}</span></div>
-        <div>End: <span>{{item.incident.timestamp_end.getDate()}}.{{item.incident.timestamp_end.getMonth() +
-            1}}.{{item.incident.timestamp_end.getFullYear()}} -
-            {{item.incident.timestamp_end.getHours()}}:{{item.incident.timestamp_end.getMinutes()}}:{{item.incident.timestamp_end.getSeconds()}}</span></div>
+        <div>Start: <span>{{format(item.incident.timestamp_start)}}</span></div>
+        <div>End: <span>{{format(item.incident.timestamp_end)}}</span></div>
       </div>
       <p class="incident-type">Type: <span>{{item.incident.incidentType}}</span></p>
       <p class="incident-images">Images: <span>{{item.images.length}}</span></p>
