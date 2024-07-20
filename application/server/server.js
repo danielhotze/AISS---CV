@@ -11,6 +11,7 @@ const Device = require('./data/device');
 
 const app = express();
 const port = 3000;
+const CHECK_DEVICE_PERIOD = 60000;
 
 /******************************* Database Setup *******************************/
 mongoose.connect('mongodb://localhost:27017/detectiondb', {});
@@ -81,7 +82,7 @@ const checkDeviceStatus = async () => {
 }
 
 // Every minute - check the status of all previously active devices.
-setInterval(checkDeviceStatus, 60000);
+setInterval(checkDeviceStatus, CHECK_DEVICE_PERIOD);
 
 /******************************* Graceful shutdown function *******************************/
 async function gracefulShutdown() {

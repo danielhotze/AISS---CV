@@ -2,6 +2,8 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  /* align-items: flex-start; */
+  align-content: flex-start;
   gap: 1rem;
   padding: 1rem;
   overflow-y: auto;
@@ -10,7 +12,7 @@
 .incident_item {
   width: 700px;
   max-width: 100%;
-  /* border: 2px solid var(--color-red); */
+  height: fit-content;
   background-color: var(--color-surface-elevated);
   box-shadow: 0 4px 12px 0 rgba(0, 0, 0, .35);
   border-radius: 8px;

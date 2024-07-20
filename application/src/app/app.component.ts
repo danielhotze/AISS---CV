@@ -3,6 +3,8 @@ import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from "./shared/navbar/navbar.component";
 import { ApiService } from './core/services/api.service';
 
+// request new data every 30000 ms
+export const REFRESH_TIME = 10000;
 @Component({
     selector: 'app-root',
     standalone: true,
@@ -23,10 +25,9 @@ export class AppComponent implements OnInit {
 
   private startApiInterval() {
     this.makeApiCalls();
-    // request new data every 30000 ms
     setInterval(() => {
       this.makeApiCalls();
-    }, 30000);
+    }, REFRESH_TIME);
   }
 
   private makeApiCalls() {
