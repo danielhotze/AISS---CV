@@ -1,1 +1,24 @@
-<p>selected-incident works!</p>
+@if (incident) {
+  <div class="image_carousel" [ngClass]="{'no_image': incident.images.length === 0}">
+    @if (incident.images.length === 0) {
+      <div>There are no images for this incident.</div>
+    } @else {
+      <img [src]="image_folder + incident.images[imageIndex].name" alt="Incident Image">
+
+      <button class="arrow_left" (click)="prevImage()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <button class="arrow_right" (click)="nextImage()">
+        <mat-icon>arrow_forward</mat-icon>
+      </button>
+
+      <div class="image_index">
+        {{imageIndex + 1}} / {{incident.images.length}}
+      </div>
+    }
+  </div>
+
+  <div class="incident_content">
+
+  </div>
+}

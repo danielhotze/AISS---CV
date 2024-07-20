@@ -1,5 +1,6 @@
 @for (item of incidents; track $index) {
-  <div class="incident_item">
+  <div class="incident_item" (click)="select.emit(item.incident.id)"
+    [ngClass]="{'selected': item.incident.id === selectedIncident}">
     <div class="incident_content">
       <p class="incident-id">ID: <span>{{item.incident.id}}</span></p>
       @if (item.device) {

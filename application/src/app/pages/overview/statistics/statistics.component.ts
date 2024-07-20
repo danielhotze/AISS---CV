@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { IncidentsService } from '../../../core/services/incidents.service';
 import { DevicesService } from '../../../core/services/devices.service';
 import { Subject, takeUntil } from 'rxjs';
-import { Device } from '../../../core/models/device.model';
 import { Incident } from '../../../core/models/incident.model';
 import moment from 'moment';
 import { ApexChart, ApexAxisChartSeries, ApexXAxis, NgApexchartsModule, ApexYAxis, ApexStroke, ChartComponent, ApexMarkers, ApexDataLabels, ApexTooltip } from 'ng-apexcharts';

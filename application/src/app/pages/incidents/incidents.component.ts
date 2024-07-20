@@ -58,4 +58,8 @@ export class IncidentsComponent implements OnInit, OnDestroy {
     this.destroyed$.complete();
   }
 
+  selectIncident(id: string) {
+    this.incidentService.selectedIncident = id;
+  }
+
 }

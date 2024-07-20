@@ -23,6 +23,9 @@
   cursor: pointer;
   outline: 2px solid var(--color-red);
 }
+.incident_item.selected {
+  outline: 3px solid var(--color-red);
+}
 
 .incident_content {
   display: flex;
