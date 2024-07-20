@@ -1,24 +1,21 @@
 # AISS-CV
 A PPE detection project using Jetson Nano devices for the university course "Artificial Intelligence in Service Systems - Computer Vision" at KIT Karlsruhe
 
-- [AISS-CV](#aiss-cv)
-  - [Intro](#intro)
-- [Application](#application)
-  - [App Requirements](#app-requirements)
-- [Jetson](#jetson)
-  - [Jetson Requirements](#jetson-requirements)
-
-
 ## Intro
 Short Introduction.
+![idea image](/images/idea-diagram.png)
 
 # Application
+The Application bundles both the server/database setup and Angular Frontend in one Electron-App. <br>
+Refer to [README.md](./application/README.md) in /application for more information.
+![application image](/images/screenshot_app_overview.png)
 
-Refer to README.md in /application for more information.
+# Model Training
+Short summary.
+Refer to [README.md](./training/README.md) in /training for more information.
 
 # Jetson
-Content of section 3
+Short summary.
+Refer to [README.md](./jetson/README.md) in /jetson for more information.
 
-## Jetson Requirements
-What needs to be done to execute the model on a Jetson Nano Device?
-- Set a static IP address on the Jetson Nano Devices (should be different for each jetson)___[A](https://hub.shinobi.video/articles/view/Z0kXCFxbQvrHcnm), [B](https://robo.fish/wiki/index.php?title=Nvidia_Jetson), [C](https://stackoverflow.com/questions/66384210/how-te-set-a-static-ip-for-a-jetson-nano)
+

@@ -1,27 +1,50 @@
 # Application
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.0.5.
+This project uses [Angular](https://angular.dev/overview) version 18.0.5. <br><br>
+The application uses an [Electron](https://www.electronjs.org/) application. <br>
+Using Electron comes with the advantage of being cross-platform by default, compatible with macOS, Windows, and Linux. <br>
+By embedding Chromium and Node.js, Electron enables web developers to create desktop applications with a native graphical user interface without the need for a native codebase.
 
-## Development server
+## Requirements
+The following requirements must be satisfied to be able to (locally) run this application.
+- Install Node.js and npm. <br> We recommend to use [nvm](https://www.freecodecamp.org/news/how-to-update-node-and-npm-to-the-latest-version/) for handling this installation.
+- Go to the terminal and run `npm install` to install all necessary node modules that are required to run the app.
+- Install [MongoDB Community Server](https://www.mongodb.com/try/download/community) for the database that will hold our device and incident data. <br>
+(Make sure that MongoDB is running on the standard port :227017).
+- [Optional]: During development, 'MongoDB Atlas' can be very helpful to get an easy access to the data in the database.
+- [Optional]: During development, [Postman](https://www.postman.com/downloads/?utm_source=postman-home) can be very helpful to create HTTP-Requests that can mock the behavior of the Jetson Nano Devices.
+
+After completing these steps, you should be ready to start the application. <br>
+Run `npm run electron` to locally start the application or run `npm run make` to create an executable for your operating system.
+
+# Architecture
+Since one of the main benefits of the Jetson Nano Device is that it can run machine learning models locally, we challenged ourself to find and implement a use case that also does not need any internet to function. <br><br>
+As depicted in the overview image in the main [README.md](../README.md), the idea was to build a [model](../training/README.md) for detecting PPE-equiment violations on construction sites which are prone to have poor internet connection. <br>
+We would then run that model on [Jetson Nano Devices](../jetson/README.md) on the construction site which have access to some camera feed. When the device detects a violation, it would send the violation data with HTTP-Requests over a local area network. <br> <br>
+In some king of safety booth, there is one main computer that receives and persists the data from all the detection devices using this Electron application. <br>
+This applications consists of an [Electron frame](#electron) that runs the [Express Server](#server) as a sub-process and inserts the [Angular Frontend](#frontend) into the desktop application. <br>
+The server provides several HTTP endpoints that allow the Jetson devices to send their detection results to the database and enables the Frontend to access and modify that data.
+
+![Architecture Sketch](../images/architecture.png)
+
+## Electron
+
+## Server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
-## Code scaffolding
+## Frontend
+![overview page](../images/screenshot_app_overview.png)
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+![incidents page](../images/screenshot_app_incidents.png)
+
+![devices page](../images/screenshot_app_devices.png)
+
+# Deployment
 
 ## Build
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## Publish
+Run ...
