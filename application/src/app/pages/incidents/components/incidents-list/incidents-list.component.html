@@ -19,12 +19,13 @@
       <p class="incident-images">Images: <span>{{item.images.length}}</span></p>
     </div>
     <div class="incident_icons">
+      <!-- Display images of missing safety equipment -->
       @if (item.incident.incidentType === 'person_without_safety') {
       <img class="img_helmet" src="assets/images/safety_helmet.svg" alt="Helmet img">
       <img class="img_vest" src="assets/images/safety_vest.svg" alt="Vest img">
-      } @else if (item.incident.incidentType === 'person_only_with_jacket') {
-      <img class="img_vest" src="assets/images/safety_vest.svg" alt="Vest img">
       } @else if (item.incident.incidentType === 'person_only_with_helmet') {
+      <img class="img_vest" src="assets/images/safety_vest.svg" alt="Vest img">
+      } @else if (item.incident.incidentType === 'person_only_with_jacket') {
       <img class="img_helmet" src="assets/images/safety_helmet.svg" alt="Helmet img">
       }
     </div>

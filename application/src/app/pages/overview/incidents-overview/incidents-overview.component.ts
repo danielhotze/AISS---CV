@@ -4,6 +4,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { Incident } from '../../../core/models/incident.model';
 import { Router } from '@angular/router';
 import { formatDateTime } from '../../../core/utility/date-format.util';
+import { DevicesService } from '../../../core/services/devices.service';
 
 @Component({
   selector: 'app-incidents-overview',
@@ -18,6 +19,7 @@ export class IncidentsOverviewComponent implements OnInit, OnDestroy {
 
   constructor(
     private incidentService: IncidentsService,
+    private deviceService: DevicesService,
     private router: Router
   ) {}
 
@@ -41,5 +43,10 @@ export class IncidentsOverviewComponent implements OnInit, OnDestroy {
 
   format(date: Date): string {
     return formatDateTime(date);
+  }
+
+  getDeviceName(deviceID: string): string {
+    const device = this.deviceService.devices.find(device => device.id === deviceID);
+    return device ? device.name : 'unknown';
   }
 }

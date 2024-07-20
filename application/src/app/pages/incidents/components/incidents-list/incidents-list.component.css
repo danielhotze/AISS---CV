@@ -40,7 +40,7 @@
 }
 .incident_content span {
   font-weight: 600;
-  color: var(--color-text-primary);
+  color: var(--color-text-secondary);
 }
 .incident-device, .incident-time {
   display: grid;

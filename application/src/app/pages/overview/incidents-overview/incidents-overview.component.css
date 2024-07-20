@@ -42,7 +42,8 @@
 }
 .incident_content h5 {
   font-size: var(--font-size-s);
-  color: var(--color-text-primary);
+  color: var(--color-text-secondary);
+  font-weight: 400;
 }
 
 .incident_icons {
@@ -53,4 +54,9 @@
 .img_vest, .img_helmet {
   width: 50px;
   height: 50px;
+}
+
+.incident_device span, .incident_content h5 span {
+  color: var(--color-text-primary);
+  font-weight: 600;
 }

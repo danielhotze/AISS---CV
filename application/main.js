@@ -9,7 +9,7 @@ let serverProcess;
 // Electron Setup:
 function createWindow() {
   const mainWindow = new BrowserWindow({
-    width: 1200,
+    width: 1400,
     height: 800,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js')
