@@ -10,7 +10,7 @@ The decision to use **Angular** for the Frontend was primarily based on the prio
 ## Requirements
 The following requirements must be satisfied to be able to (locally) run this application.
 - Install Node.js and npm. <br> We recommend to use [nvm](https://www.freecodecamp.org/news/how-to-update-node-and-npm-to-the-latest-version/) for handling this installation.
-- Go to the terminal and run `npm install` to install all necessary node modules that are required to run the app.
+- Go to the terminal, navigate to `{folder_path}\AISS-CV\application` and run `npm install` to install all necessary node modules that are required to run the app.
 - Install [MongoDB Community Server](https://www.mongodb.com/try/download/community) for the database that will hold our device and incident data. <br>
 (Make sure that MongoDB is running on the standard port `:227017`).
 - [Optional]: During development, 'MongoDB Atlas' can be very helpful to get an easy access to the data in the database.
@@ -43,7 +43,7 @@ The `createWindow()` method can be used to define the size of the desktop app wi
 We use this event to initiate a **graceful shutdown** of the Server utilityProcess, the Express app, and Database Connection and then quit the app.
 
 ## Server
-The **Server** is responsible for managing the **Database Connection** and offering **HTTP Endpoints** that enable creating, receiving, deleting or modifying the data for detection devices and PPE-equipment violation incidents. <br>
+The **Server** is responsible for managing the **Database Connection** and offering **HTTP Endpoints** that enable creating, receiving, deleting or modifying the data for the detection devices and PPE-equipment violation incidents. <br>
 The primary code for the Server is located in the [server.js](./server/server.js) file. <br>
 
 ### Database
@@ -115,10 +115,30 @@ The recommended tool for this task is [Electron Forge](https://www.electronforge
 **Electron Forge** is configured in the [forge.config.js](./forge.config.js) file where one can specify different **Makers**, **Plugins** and **Publishers** that contribute to creating and publishing the distributables. <br>
 Additionally, we can specify the name of the application or an app icon to give our packaged application more personality. <br>
 
+## Local Execution
+During development, we recommend to run the `npm run electron` command to quickly start the application. <br>
+This command first executes the `ng build` command to prepare the Angular Frontend and then starts the Electron application using the `electron .` <br>
 
-## Make
+For production use we recommend to create distributables for the target operating system that can be installed and executed like any other desktop application.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Creating distributables
+The [Electron Forge CLI](https://www.electronforge.io/cli#build-commands) offers three simple build commands: `Package`, `Make`, and `Publish`. <br>
+- **Package**: This command will package the application into a platform-specific executable bundle and put the result in a folder. Please note that this does not make a distributable format.
+- **Make**: This command will make distributables for our application based on the Forge config and additional parameters.
+- **Publish**: This command will attempt to package, make, and publish the Forge application to the publish targets such as GitHub defined in the Forge config.
+
+To run these commands, we register them with **npm** in the 'scripts' section of the [package.json](./package.json) file.
+```
+"scripts": {
+    ...
+    "electron": "ng build && electron .",
+    "package": "electron-forge package",
+    "make": "electron-forge make",
+    "publish": "electron-forge publish"
+  },
+```
+We recommend to primarily use the `npm run make` command to create a distributable for your system since the `npm run publish` command will not work as intended on private repositories such as this one. <br>
+Once you have the executable bundle and/or installer for your operating system, you can easily share it with others so that they can also execute this application without the need of interacting with the terminal.
 
 ## Limitations
 In the following, we will discuss some limitations of the current Electron Forge setup that should be addressed if one had the intention of creating a real product from this project.
@@ -126,5 +146,6 @@ In the following, we will discuss some limitations of the current Electron Forge
 By using code signing technology, you can certify that the application was created by you to avoid operating system security checks from interfering with the application. <br>
 We decided to skip this since acquiring certificates like 'Windows Authenticode' can be quite pricey.
 - One limitation with the creation of the distributables is, that one can only create it for their own operating system. It is not possible to create a macOS executable from a Windows machine. <br>
-Therefore, we would recommend to use the [GitHub Publisher](https://www.electronforge.io/config/publishers/github) of **Electron Forge** to integrate the creation of distributables with GitHub Actions that can run the creation of distributables on different operating systems. <br>
-We already added the publisher to the Forge configuration but decided to 
+Therefore, we would recommend to use the [GitHub Publisher](https://www.electronforge.io/config/publishers/github) of **Electron Forge** to integrate the creation of distributables with **GitHub Actions** that can run the creation of distributables on different operating systems. <br>
+We already added the publisher to the Forge configuration but decided to omit the GitHub Actions workflows because they don't work correctly on private repositories. <br>
+Once one sets the Repository to 'public', creating [build](https://dev.to/erikhofer/build-and-publish-a-multi-platform-electron-app-on-github-3lnd) and [release](https://sevic.dev/notes/electron-forge-publish-github/) workflows would not require much effort.
