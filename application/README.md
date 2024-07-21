@@ -12,7 +12,7 @@ The following requirements must be satisfied to be able to (locally) run this ap
 - Install Node.js and npm. <br> We recommend to use [nvm](https://www.freecodecamp.org/news/how-to-update-node-and-npm-to-the-latest-version/) for handling this installation.
 - Go to the terminal and run `npm install` to install all necessary node modules that are required to run the app.
 - Install [MongoDB Community Server](https://www.mongodb.com/try/download/community) for the database that will hold our device and incident data. <br>
-(Make sure that MongoDB is running on the standard port :227017).
+(Make sure that MongoDB is running on the standard port `:227017`).
 - [Optional]: During development, 'MongoDB Atlas' can be very helpful to get an easy access to the data in the database.
 - [Optional]: During development, [Postman](https://www.postman.com/downloads/?utm_source=postman-home) can be very helpful to create **HTTP-Requests** that can mock the behavior of the Jetson Nano Devices.
 
@@ -40,10 +40,10 @@ The `createWindow()` method can be used to define the size of the desktop app wi
 `app.whenReady()` is used to define actions that should be executed during the application startup, such as starting the Server as a [utilityProcess](https://www.electronjs.org/docs/latest/api/utility-process) which is Electron's version of a [childProcess](https://nodejs.org/api/child_process.html#child_processforkmodulepath-args-options). Such a `utilityProcess` enables us to spawn a subprocess for the Server code that can run separately and communicates with the parent process using the `process.on(...)` and `process.postMessage(...)` syntax. <br>
 
 `app.on('window-all-closed', ...)` is an Electron *event listener* that gets executed during the app shutdown process after the desktop app window is closed. <br>
-We use this event to initiate a **graceful shutdown** of the Server utilityProcess and Database Connection and then quit the app.
+We use this event to initiate a **graceful shutdown** of the Server utilityProcess, the Express app, and Database Connection and then quit the app.
 
 ## Server
-The **Server** is responsible for managing the **Database Connection** and offering **HTTP Endpoints** that allow creating, receiving, deleting or modifying the data for detection devices and PPE-equipment violation incidents. <br>
+The **Server** is responsible for managing the **Database Connection** and offering **HTTP Endpoints** that enable creating, receiving, deleting or modifying the data for detection devices and PPE-equipment violation incidents. <br>
 The primary code for the Server is located in the [server.js](./server/server.js) file. <br>
 
 ### Database
@@ -71,7 +71,35 @@ These schemas can then be used in the HTTP-Request to create, modify, receive, o
 ### Express
 This app uses the popular Node.js framework [Express](https://expressjs.com/de/) to define **HTTP Endpoints** through which the **Jetson Nano Devices** and the **Angular Frontend** can interact with the data in the **database**. <br>
 
+The different **HTTP Endpoints** are defined in the /routes folder. <br>
+These endpoints can be defined using Express Router with the ability to create endpoints such as `router.get`/`router.post`/`router.put`/`router.delete`. <br>
+To register such endpoints with the Express App, one can use the `app.use` method:
+```
+app.use('/api', deviceRoutes);
+app.use('/api', incidentRoutes);
+app.use('/api', incidentImageRoutes(upload));
+```
+Once the routes are implemented and registered, we can instruct Express to listen to a specific port on the machine:
+```
+const port = 3000;
+...
+const serverInstance = app.listen(port, () => {
+  console.log(`[Server: Server is running on http://localhost:${port}]`);
+});
+```
+Using this setup, all HTTP Endpoints of the Express Server are available under `http://localhost:3000/api/{endpoint}`.
 
+
+### Jetson Device Connection
+The **server.js** code also defines a `checkDeviceStatus` function which uses the [axios](https://axios-http.com/docs/intro) library to periodically send send an HTTP GET request to all supposedly 'Active' devices to check if they are still running and available. <br>
+
+This request is sent to the endpoint `http://${device.ip}:5000/ping` which is made available on the Jetson Nano Devices using a [Flask](https://flask.palletsprojects.com/en/3.0.x/) server, which is a Python library that offers similar capabilities to Express for Python applications. <br>
+The Jetson Nano Devices then use this request to extract the IP address of the main computer so that they can send their incident data to the correct machine. <br>
+
+To connect to 'Inactive' devices, the Express Server offers the endpoint `/devices/connect/:deviceId` which sends a `ping` request to that specific device. <br>
+
+An important part of this application is the ability of the Jetson Nano Devices to also send images of PPE violations to the server. <br>
+To enable this on the Express Server, we use the Node.js module [fs](https://nodejs.org/api/fs.html) and the middleware [multer](https://www.npmjs.com/package/multer). **fs** allows us to work with the file system on the computer to create the directory where we want to save the incident images, while **multer** helps with uploading the image files that are sent by the Jetson Nano devices.
 
 ## Frontend
 ![overview page](../images/screenshot_app_overview.png)
@@ -81,10 +109,22 @@ This app uses the popular Node.js framework [Express](https://expressjs.com/de/)
 ![devices page](../images/screenshot_app_devices.png)
 
 # Deployment
+Another good thing about Electron is the ability to create distributable and installers for the different operating systems macOS, Windows, and Linux. <br>
+The recommended tool for this task is [Electron Forge](https://www.electronforge.io/). <br>
 
-## Build
+**Electron Forge** is configured in the [forge.config.js](./forge.config.js) file where one can specify different **Makers**, **Plugins** and **Publishers** that contribute to creating and publishing the distributables. <br>
+Additionally, we can specify the name of the application or an app icon to give our packaged application more personality. <br>
+
+
+## Make
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
-## Publish
-Run ...
+## Limitations
+In the following, we will discuss some limitations of the current Electron Forge setup that should be addressed if one had the intention of creating a real product from this project.
+- We would recommend to use [code signing](https://www.electronforge.io/guides/code-signing) for packaging and distributing this application for the public. <br> 
+By using code signing technology, you can certify that the application was created by you to avoid operating system security checks from interfering with the application. <br>
+We decided to skip this since acquiring certificates like 'Windows Authenticode' can be quite pricey.
+- One limitation with the creation of the distributables is, that one can only create it for their own operating system. It is not possible to create a macOS executable from a Windows machine. <br>
+Therefore, we would recommend to use the [GitHub Publisher](https://www.electronforge.io/config/publishers/github) of **Electron Forge** to integrate the creation of distributables with GitHub Actions that can run the creation of distributables on different operating systems. <br>
+We already added the publisher to the Forge configuration but decided to 
