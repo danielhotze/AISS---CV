@@ -15,7 +15,7 @@ The following requirements must be satisfied to be able to (locally) run this ap
 - [Optional]: During development, [Postman](https://www.postman.com/downloads/?utm_source=postman-home) can be very helpful to create HTTP-Requests that can mock the behavior of the Jetson Nano Devices.
 
 After completing these steps, you should be ready to start the application. <br>
-Run `npm run electron` to locally start the application or run `npm run make` to create an executable for your operating system.
+Run `npm run electron` to locally start the application or run `npm run make` to create a distributable for your operating system.
 
 # Architecture
 Since one of the main benefits of the Jetson Nano Device is that it can run machine learning models locally, we challenged ourself to find and implement a use case that also does not need any internet to function. <br><br>
@@ -28,6 +28,15 @@ The server provides several HTTP endpoints that allow the Jetson devices to send
 ![Architecture Sketch](../images/architecture.png)
 
 ## Electron
+As stated before, Electron is responsible for actually creating the (native) desktop application which contains the Angular Frontend and runs the Express Server. <br>
+
+The primary code for the Electron setup is located in the [main.js](./main.js) file. <br>
+The `createWindow()` method can be used to define the size of the desktop app window, set app icons and define the Frontend application that is displayed inside the app window. <br>
+
+`app.whenReady()` is used to define actions that should be executed during the application startup, such as starting the Server as a [utilityProcess](https://www.electronjs.org/docs/latest/api/utility-process) which is Electron's version of a [childProcess](https://nodejs.org/api/child_process.html#child_processforkmodulepath-args-options). Such a `utilityProcess` enables us to spawn a subprocess for the Server code that can run separately and communicates with the parent process using the `process.on(...)` and `process.postMessage(...)` syntax. <br>
+
+`app.on('window-all-closed', ...)` is an Electron event listener that gets executed during the app shutdown process after the desktop app window is closed. <br>
+We use this event to initiate a graceful shutdown of the Server utilityProcess and Database connection and then quit the app.
 
 ## Server
 

@@ -1,4 +1,5 @@
 const { app, BrowserWindow, utilityProcess } = require('electron');
+// path.join and __dirname allow us to create the right path format for different operating systems, adding the '/' or '\' as needed.
 const path = require('path');
 
 // Prevent Squirrel.Window to launch the app multiple times during installation
@@ -8,6 +9,7 @@ let serverProcess;
 
 // Electron Setup:
 function createWindow() {
+  // Define default app window size and icons.
   const mainWindow = new BrowserWindow({
     width: 1400,
     height: 800,
