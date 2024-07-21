@@ -102,11 +102,66 @@ An important part of this application is the ability of the Jetson Nano Devices 
 To enable this on the Express Server, we use the Node.js module [fs](https://nodejs.org/api/fs.html) and the middleware [multer](https://www.npmjs.com/package/multer). **fs** allows us to work with the file system on the computer to create the directory where we want to save the incident images, while **multer** helps with uploading the image files that are sent by the Jetson Nano devices.
 
 ## Frontend
+The User Interface of the Electron App consists of a simple Angular (Web-)Application. <br>
+It enables the user to interact with the **Server** and display the data that is coming from the **Jetson Nano Devices**.
+
+### Folder Structure
+```
+application/
+├── src/
+│ ├── app/
+│ │ ├── core/
+│ │ │ ├── models/
+│ │ │ ├── services/
+│ │ │ └── utility/
+│ │ ├── pages/
+│ │ │ ├── overview/
+│ │ │ ├── incidents/
+│ │ │ └── devices/
+│ │ ├── shared/
+│ │ └── app.routes.ts
+│ ├── assets/
+│ │ │ ├── fonts/
+│ │ │ └── images/
+│ ├── index.html
+│ └── ...
+├── angular.json
+└── ...
+```
+- `angular.json`: Includes the Angular configuration with settings for processes like 'build', 'serve' or 'test'.
+- `app/`: This folder contains all code (except for the configuration) that is needed for the Angular Frontend.
+- `core/`: This folder defines 'models', 'services' and 'utility functionality' that enables the communication with the Server and making the data available in the Components.
+- `shared/`: The 'shared' folder contains components that are used in multiple pages.
+- `pages/`: The frontend consists of the three pages 'overview', 'incidents', and 'devices'. Each of these pages has their own sub-folder with components that are needed to render that page.
+- `app.routes.ts`: This file defines the different routes/pages of the application and the corresponding components. Angular uses this file to allow the user to navigate between our pages.
+- `assets/`: The 'assets' folder contains 'fonts' and 'images' that are used in the user interface. By adding these files here instead of hosting them on the internet, we can stay true to our objective of building an application that does not need any internet connection to work properly.
+
+### Pages - Overview
 ![overview page](../images/screenshot_app_overview.png)
+Upon opening the application, the user will first be sent to the `/overview` page. <br>
+Here, they can get a quick overview of the trend in incidents per day, enabling them to get a good feeling for the success of safety regulations and awareness campaigns. <br>
 
+Additionally, they get an overview of the recent incidents and the current detection devices. <br>
+By clicking on a incident or device, they can easily navigate to a more detailed representation of that incident or device in the `/incidents` or `/devices` page.
+
+### Pages - Incidents
 ![incidents page](../images/screenshot_app_incidents.png)
+In the `/incidents` page, users receive a list of all available incidents. <br>
+By clicking on a incident in that list, they can open an enhanced view of that incident where they can also look at images from that incident to determine whether the detected incident truly represents a severe violation of PPE safety regulations.
 
+### Pages - Devices
 ![devices page](../images/screenshot_app_devices.png)
+The `/devices` page lists all saved devices and provides the ability to add new devices. Before creating new devices, the input is validated to make sure that the new device data conforms to the required format. <br>
+
+Users can also make changes to existing devices and attempt connecting to 'Inactive' devices.
+
+### Server Communication
+The **Server Communication** is handled through `services` in the `/core` folder. <br>
+Services in Angular are injectable into any component which makes it very easy to access the data from anywhere in the Angular Application.
+- `devices.service.ts` is responsible for storing device data that is received from the server and also contains HTTP requests related to the `api/devices` endpoints on the Express Server.
+- `incidents.service.ts` is responsible for storing incident data that is received from the server and also contains HTTP requests related to the `api/incidents` endpoints on the Express Server.
+- `images.service.ts` is responsible for storing incident image data that is received from the server and also contains HTTP requests related to the `api/incidentImages` endpoints on the Express Server.
+- `api.service.ts` is a wrapper for all the HTTP requests from the different data-specific services. This makes it easy to keep an overview of the available API Calls. All API Calls in the different components should be made through this service.
 
 # Deployment
 Another good thing about Electron is the ability to create distributable and installers for the different operating systems macOS, Windows, and Linux. <br>
@@ -121,7 +176,7 @@ This command first executes the `ng build` command to prepare the Angular Fronte
 
 For production use we recommend to create distributables for the target operating system that can be installed and executed like any other desktop application.
 
-## Creating distributables
+## Creating Distributables
 The [Electron Forge CLI](https://www.electronforge.io/cli#build-commands) offers three simple build commands: `Package`, `Make`, and `Publish`. <br>
 - **Package**: This command will package the application into a platform-specific executable bundle and put the result in a folder. Please note that this does not make a distributable format.
 - **Make**: This command will make distributables for our application based on the Forge config and additional parameters.
@@ -140,7 +195,7 @@ To run these commands, we register them with **npm** in the 'scripts' section of
 We recommend to primarily use the `npm run make` command to create a distributable for your system since the `npm run publish` command will not work as intended on private repositories such as this one. <br>
 Once you have the executable bundle and/or installer for your operating system, you can easily share it with others so that they can also execute this application without the need of interacting with the terminal.
 
-## Limitations
+## Deployment Limitations
 In the following, we will discuss some limitations of the current Electron Forge setup that should be addressed if one had the intention of creating a real product from this project.
 - We would recommend to use [code signing](https://www.electronforge.io/guides/code-signing) for packaging and distributing this application for the public. <br> 
 By using code signing technology, you can certify that the application was created by you to avoid operating system security checks from interfering with the application. <br>
@@ -149,3 +204,12 @@ We decided to skip this since acquiring certificates like 'Windows Authenticode'
 Therefore, we would recommend to use the [GitHub Publisher](https://www.electronforge.io/config/publishers/github) of **Electron Forge** to integrate the creation of distributables with **GitHub Actions** that can run the creation of distributables on different operating systems. <br>
 We already added the publisher to the Forge configuration but decided to omit the GitHub Actions workflows because they don't work correctly on private repositories. <br>
 Once one sets the Repository to 'public', creating [build](https://dev.to/erikhofer/build-and-publish-a-multi-platform-electron-app-on-github-3lnd) and [release](https://sevic.dev/notes/electron-forge-publish-github/) workflows would not require much effort.
+
+# Next Steps
+With some more time and development effort, we could improve the application with the following enhancements:
+- Adding 'filters', 'predictions' and other forms of more advanced analytics to the 'statistics' section in the `/overview` page of the user interface to create more valuable insights for the user.
+- Adding the ability to send new model weights to the Jetson Nano Devices to avoid directly accessing the devices whenever a new version of the detection model is available. <br>
+Further, it would be nice to be able to select which of the available models each device should run.
+- Adding further control capabilities for the devices, such as 'start/stop detection'.
+- While we omitted this feature because it may be legally not allowed in Germany, it would be nice to integrate a live view of the camera feed on the Jetson Nano Devices.
+- ...
