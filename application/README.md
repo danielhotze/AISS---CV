@@ -25,7 +25,7 @@ Since one of the main benefits of the **Jetson Nano Device** is that it can run 
 As depicted in the overview image in the main [README.md](../README.md), the idea was to build a [model](../training/README.md) for detecting PPE-equiment violations on construction sites which are prone to have poor internet connection. <br>
 We would then run that model on [Jetson Nano Devices](../jetson/README.md) on the construction site which have access to some camera feed. When the device detects a violation, it would send the violation data with **HTTP-Requests** over a **local area network**. <br>
 
-In some king of safety booth, there is one **main computer** that receives and persists the data from all the detection devices using this **Electron application**. <br>
+In some kind of safety booth, there is one **main computer** that receives and persists the data from all the detection devices using this **Electron application**. <br>
 This applications consists of an [Electron frame](#electron) that runs the [Express Server](#server) as a **utility-process** and integrates an [Angular Frontend](#frontend) into the desktop application. <br>
 The server provides several **HTTP endpoints** that allow the Jetson devices to send their detection results to the **database** and enables the Frontend to *access and modify* that data.
 
