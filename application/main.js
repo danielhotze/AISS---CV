@@ -21,11 +21,12 @@ function createWindow() {
   // Open the DevTools.
   // mainWindow.webContents.openDevTools();
 
+  // link to the Angular index.html file to load the Angular Frontend
   mainWindow.loadFile(path.join(__dirname, 'dist', 'application', 'browser', 'index.html'));
 }
 
 app.whenReady().then(() => {
-  // Run Server as a utilityProcess
+  // Run Server as a utilityProcess and set up message event listeners
   serverProcess = utilityProcess
   .fork(path.join(__dirname, 'server', 'server.js'))
   .on('spawn', () => console.log('Electron: [Spawned new server process...]'))
