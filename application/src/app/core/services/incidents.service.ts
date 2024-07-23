@@ -56,4 +56,19 @@ export class IncidentsService {
     })
   }
 
+  deleteIncident(incidentId: string) {
+    if (incidentId === this.selectedIncident) {
+      this.selectedIncident = undefined;
+    }
+    const requestUrl = `${environment.api.incidents_url}/${incidentId}`;
+    this.http.delete(requestUrl).pipe(
+      catchError((error: HttpErrorResponse) => this.errorHandler.handleError(error, 'An error occured while trying to delete the incident.'))
+    ).subscribe((deleteResponse: any) => {
+      if (deleteResponse.message) {
+        console.log(deleteResponse.message);
+      }
+      this.loadIncidents();
+    });
+  }
+
 }

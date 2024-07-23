@@ -13,6 +13,8 @@ const app = express();
 const port = 3000;
 const CHECK_DEVICE_PERIOD = 60000;
 
+const UPLOAD_DIR = '/PPE-Detection_uploads';
+
 /******************************* Database Setup *******************************/
 mongoose.connect('mongodb://localhost:27017/detectiondb', {});
 
@@ -25,15 +27,14 @@ db.once('open', () => {
 /******************************* File-System Setup *******************************/
 // const uploadDir = path.join(__dirname, 'PPE-Detection_uploads');
 // let's just dump images into C:/PPE-Detection_uploads for now - not pretty but works fine
-const uploadDir = '/PPE-Detection_uploads';
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir);
+if (!fs.existsSync(UPLOAD_DIR)) {
+  fs.mkdirSync(UPLOAD_DIR);
 }
 
 /******************************* Multer Setup *******************************/
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, uploadDir)
+      cb(null, UPLOAD_DIR)
     },
     filename: function (req, file, cb) {
       cb(null, file.originalname)

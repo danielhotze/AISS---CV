@@ -33,6 +33,9 @@ export class ApiService {
   requestIncidents() {
     this.incidentService.loadIncidents();
   }
+  deleteIncident(incidentId: string) {
+    this.incidentService.deleteIncident(incidentId);
+  }
 
   // IMAGES
   requestImages() {

@@ -1,6 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const Incident = require('../data/incident');
+const IncidentImage = require('../data/incidentImage');
+const fs = require('fs');
+
+const UPLOAD_DIR = '/PPE-Detection_uploads';
 
 // POST /incidents - Create new incident
 // http://<server_ip>:3000/api/incidents
@@ -75,6 +79,42 @@ router.get('/incidents/:deviceID', async (req, res) => {
     res.json(incidents);
   } catch (error) {
     console.error('Error retrieving incidents:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// DELETE /incidents/:id - Delete an incident by ID
+// http://<server_ip>:3000/api/incidents/:id
+router.delete('/incidents/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Find and delete the incident
+    const deletedIncident = await Incident.findOneAndDelete({ id });
+
+    if (!deletedIncident) {
+      return res.status(404).json({ error: 'Incident not found' });
+    }
+
+    // Find and delete associated images from the database
+    const imagesToDelete = await IncidentImage.find({ incidentID: id });
+
+    if (imagesToDelete.length > 0) {
+      // Delete images from the file system
+      imagesToDelete.forEach(image => {
+        const imagePath = UPLOAD_DIR + '/' + image.name;
+        if (fs.existsSync(imagePath)) {
+          fs.unlinkSync(imagePath); // Delete the image file
+        }
+      });
+
+      // Delete image records from the database
+      await IncidentImage.deleteMany({ incidentID: id });
+    }
+
+    res.status(200).json({ message: 'Incident and associated images deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting incident and images:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });

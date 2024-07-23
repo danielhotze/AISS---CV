@@ -25,11 +25,29 @@
     <p><span>Start:</span> {{format(selected.incident.timestamp_start)}}</p>
     <p><span>End:</span> {{format(selected.incident.timestamp_end)}}</p>
     <p class="incident_type"><span>Type:</span> {{selected.incident.incidentType}}</p>
+    <div class="incident_icons">
+      <!-- Display images of missing safety equipment -->
+      @if (selected.incident.incidentType.includes('person_without_safety')) {
+      <img class="img_no_safety" src="assets/images/no_safety.svg" alt="no safety img">
+      }
+      @if (selected.incident.incidentType.includes('person_only_with_helmet')) {
+      <img class="img_helmet" src="assets/images/only_helmet.svg" alt="only_helmet img">
+      }
+      @if (selected.incident.incidentType.includes('person_only_with_jacket')) {
+      <img class="img_jacket" src="assets/images/only_jacket.svg" alt="only_jacket img">
+      }
+    </div>
     @if (selected.device) {
-      <br>
       <p><span>Device:</span> {{selected.device.name}}</p>
       <p><span>Location:</span> {{selected.device.location}}</p>
     }
+  </div>
+
+  <div class="incident_actions">
+    <button class="btn_delete" (click)="deleteImage()">
+      <mat-icon>delete</mat-icon>
+      <span>Delete Incident</span>
+    </button>
   </div>
 } @else {
   <div>No incident selected.</div>

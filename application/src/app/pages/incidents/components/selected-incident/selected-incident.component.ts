@@ -5,6 +5,7 @@ import { Image } from '../../../../core/models/image.model';
 import { MatIconModule } from '@angular/material/icon';
 import { NgClass } from '@angular/common';
 import { formatDateTime } from '../../../../core/utility/date-format.util';
+import { ApiService } from '../../../../core/services/api.service';
 
 // refer to server.js for the image path
 export const IMAGE_FOLDER_URL = '/PPE-Detection_uploads/';
@@ -20,6 +21,10 @@ export class SelectedIncidentComponent {
   @Input() selected: {incident: Incident, images: Image[], device: Device | undefined} | undefined;
   public imageIndex = 0;
   public image_folder = IMAGE_FOLDER_URL;
+
+  constructor(
+    private apiService: ApiService
+  ) { }
 
   nextImage() {
     if (this.imageIndex === (this.selected!.images.length - 1)) {
@@ -39,5 +44,11 @@ export class SelectedIncidentComponent {
 
   format(date: Date): string {
     return formatDateTime(date);
+  }
+
+  deleteImage() {
+    if (this.selected && confirm('Are you sure that you want to to delete this incident and all related images from your system?')) {
+      this.apiService.deleteIncident(this.selected.incident.id);
+    }
   }
 }
