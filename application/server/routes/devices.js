@@ -67,7 +67,7 @@ router.get('/devices/connect/:deviceId', async (req, res) => {
     if (!device) {
       return res.status(404).json({ error: 'Cannot ping Device - Device not found' });
     }
-    const response = await axios.get(`http://${device.ip}:5000/ping`, { timeout: 5000 });
+    const response = await axios.get(`http://${device.ip}:5000/ping?deviceId=${device.id}`, { timeout: 5000 });
     if (response.status === 200) {
       console.log(`Device ${device.ip} (${device.name}) is active.`);
       res.json({ message: `Device ${device.ip} (${device.name}) is now active.`})

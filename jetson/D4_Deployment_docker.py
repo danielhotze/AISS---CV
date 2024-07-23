@@ -58,7 +58,7 @@ incident_types = []
 SERVER_IP = None # will be updated dynamically
 SERVER_PORT = 3000
 FLASK_PORT = 5000
-DEVICE_ID = None #TODO: receive from somewhere?
+DEVICE_ID = None
 
 #-------------------------------------------------------------#
 # Server Communication
@@ -72,12 +72,15 @@ app = Flask(__name__)
 # '/ping' route to receive the server IP address and show that the device is active
 @app.route('/ping', methods=['GET'])
 def ping():
-    global SERVER_IP
+    global SERVER_IP, DEVICE_ID
     if request.headers.getlist("X-Forwarded-For"):
         SERVER_IP = request.headers.getlist("X-Forwarded-For")[0]
     else:
         SERVER_IP = request.remote_addr
-    print(f"Received ping from {SERVER_IP}")
+    device_id = request.args.get('deviceId', None)
+    if device_id:
+        DEVICE_ID = device_id
+    print(f"Received ping from {SERVER_IP} for this device with ID {DEVICE_ID}")
     return '', 200
 
 # Flask Thread
@@ -90,14 +93,14 @@ def run_flask():
         time.sleep(1)
 
 #___ HTTP Requests ___#
-def send_create_incident(incident_id, timestamp, deviceID, incidentTypes):
+def send_create_incident(incident_id, timestamp, incidentTypes):
     if SERVER_IP is None:
         return
     url = f'http://{SERVER_IP}:{SERVER_PORT}/api/incidents'
     data = {
         'incidentID': incident_id,
         'timestamp': timestamp,
-        'deviceID': deviceID,
+        'deviceID': DEVICE_ID,
         'incidentTypes': incidentTypes
     }
     response = requests.post(url, data=data)
