@@ -121,8 +121,8 @@ application/
 │ │ ├── shared/
 │ │ └── app.routes.ts
 │ ├── assets/
-│ │ │ ├── fonts/
-│ │ │ └── images/
+│ │ ├── fonts/
+│ │ └── images/
 │ ├── index.html
 │ └── ...
 ├── angular.json
