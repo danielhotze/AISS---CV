@@ -11,12 +11,11 @@ import uuid
 SERVER_IP = 'localhost' # add flask API through which the server can tell the device its' IP
 
 # Device Settings
-#hostname = socket.gethostname()
-#device_ip = socket.gethostbyname(hostname) # option for dynamically getting the IP-Address
 DEVICE_ID = 'device1' # how do we best configure this? Probably some setup over flask API?
 
 # Incident Variables
-MAX_UNDETECTED_FRAMES = 5
+DETECTIONS_UNTIL_INCIDENT = 3 # consecutive frames with a detection until a incident is opened to avoid "false positives"
+MAX_UNDETECTED_FRAMES = 5 # amount of frames without a detection until the current incident is closed
 SKIP_IMAGE_UPLOAD_MOD = 5 # uploading every frame might be too much - only upload every x frames
 detections_counter = 0
 frames_without_detection = 0

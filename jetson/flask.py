@@ -7,13 +7,13 @@ from flask import Flask, request
 # It would probably also be possible to create a 'startDetection' route which starts the detection code but we should
 # wait with that until everything else works I think
 
-# will run on port 5000 by standard?
-app = Flask(__name__)
-
 # Either incorporate the Flask code into the main code or make SERVER_IP and DEVICE_ID accessible to the main detection logic
 # and especially the server requests
 SERVER_IP = None
 DEVICE_ID = None
+
+# will run on port 5000 by standard?
+app = Flask(__name__)
 
 # GET - The server will periodically (maybe once a minute?) send a GET request just to check if the device is still running
 # Here, we can just extract the server-IP from the request object
