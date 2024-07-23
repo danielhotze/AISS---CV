@@ -93,7 +93,7 @@ def run_flask():
         time.sleep(1)
 
 #___ HTTP Requests ___#
-def send_create_incident(incident_id, timestamp, incidentTypes):
+def send_create_incident(incident_id, timestamp, incident_type):
     if SERVER_IP is None:
         return
     url = f'http://{SERVER_IP}:{SERVER_PORT}/api/incidents'
@@ -101,18 +101,19 @@ def send_create_incident(incident_id, timestamp, incidentTypes):
         'incidentID': incident_id,
         'timestamp': timestamp,
         'deviceID': DEVICE_ID,
-        'incidentTypes': incidentTypes
+        'incidentType': incident_type if isinstance(incident_type, list) else [incident_type]
     }
     response = requests.post(url, data=data)
     return response.json()
 
-def send_update_incident(incident_id, timestamp):
+def send_update_incident(incident_id, timestamp, incident_type):
     if SERVER_IP is None:
         return
     url = f'http://{SERVER_IP}:{SERVER_PORT}/api/incidents'
     data = {
         'incidentID': incident_id,
-        'timestamp': timestamp
+        'timestamp': timestamp,
+        'incidentType': incident_type if isinstance(incident_type, list) else [incident_type]
     }
     response = requests.put(url, data=data)
     return response.json()

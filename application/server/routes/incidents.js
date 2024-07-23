@@ -13,7 +13,7 @@ router.post('/incidents', async (req, res) => {
       timestamp_start: new Date(timestamp),
       timestamp_end: new Date(timestamp),
       deviceID: deviceID,
-      incidentType: incidentType,
+      incidentType: Array.isArray(incidentType) ? incidentType : [incidentType],
     });
 
     const savedIncident = await incident.save();
@@ -29,12 +29,16 @@ router.post('/incidents', async (req, res) => {
 router.put('/incidents/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const { timestamp } = req.body;
+    const { timestamp, incidentType } = req.body;
+
+    // Ensure incidentType is an array
+    const newIncidentTypes = Array.isArray(incidentType) ? incidentType : [incidentType];
 
     const incident = await Incident.findOneAndUpdate(
       { id },
       {
         $max: { timestamp_end: new Date(timestamp) }, // Set timestamp_end to the new value
+        $addToSet: { incidentType: {$each: newIncidentTypes} } // Add new incident types, avoiding duplicates
       },
       { new: true }
     );
