@@ -29,6 +29,9 @@
       @if (item.incident.incidentType.includes('person_only_with_jacket')) {
       <img class="img_jacket" src="assets/images/only_jacket.svg" alt="only_jacket img">
       }
+      @if (item.incident.incidentType.includes('person_with_full_safety')) {
+      <img class="img_jacket" src="assets/images/full_safety.svg" alt="full_safety img">
+      }
     </div>
   </div>
 }
