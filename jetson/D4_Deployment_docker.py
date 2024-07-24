@@ -93,9 +93,10 @@ def run_flask():
 
 #___ HTTP Requests ___#
 def send_create_incident(timestamp):
-    global incident_id, incident_types
+    global incident_id, incident_types, SERVER_IP, SERVER_PORT, incident_active
     if SERVER_IP is None:
         return
+    print(f"Sending 'create_incident': {incident_id}")
     url = f'http://{SERVER_IP}:{SERVER_PORT}/api/incidents'
     data = {
         'incidentID': incident_id,
@@ -103,26 +104,44 @@ def send_create_incident(timestamp):
         'deviceID': DEVICE_ID,
         'incidentType': incident_types if isinstance(incident_types, list) else [incident_types]
     }
-    response = requests.post(url, data=data)
-    return response.json()
+    try:
+        response = requests.post(url, data=data)
+        print(f'"create_incident" response status code: {response.status_code}')
+        response.raise_for_status()
+        if response.status_code == 200:
+            incident_active = True
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        print(f"Error sending create incident: {e}")
+        return None
+    
 
 def send_update_incident(timestamp):
-    global incident_id, incident_types
+    global incident_id, incident_types, SERVER_IP, SERVER_PORT
     if SERVER_IP is None:
         return
+    print(f"Sending 'update_incident': {incident_id}")
     url = f'http://{SERVER_IP}:{SERVER_PORT}/api/incidents'
     data = {
         'incidentID': incident_id,
         'timestamp': timestamp,
         'incidentType': incident_types if isinstance(incident_types, list) else [incident_types]
     }
-    response = requests.put(url, data=data)
-    return response.json()
+    try:
+        response = requests.put(url, data=data)
+        print(f'"update_incident" response status code: {response.status_code}')
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        print(f"Error sending update incident: {e}")
+        return None
+    
 
 def send_upload_image(image, timestamp):
-    global incident_id
+    global incident_id, SERVER_IP, SERVER_PORT
     if SERVER_IP is None:
         return
+    print(f"Sending 'upload_image': {incident_id}")
     url = f'http://{SERVER_IP}:{SERVER_PORT}/api/upload'
     _, img_encoded = cv2.imencode('.jpg', image)
     image_name = 'img_' + str(uuid.uuid4()) + '.jpg'
@@ -132,8 +151,15 @@ def send_upload_image(image, timestamp):
         'timestamp': timestamp,
         'incidentID': incident_id
     }
-    response = requests.post(url, files=files, data=data)
-    return response.json()
+    try:
+        response = requests.post(url, files=files, data=data)
+        print(f'"upload_image" response status code: {response.status_code}')
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        print(f"Error sending upload image: {e}")
+        return None
+    
 
 #-------------------------------------------------------------#
 # Preprocessing
@@ -292,7 +318,6 @@ def main_loop():
 
             # Check create_incident
             if check_create_incident():
-                incident_active = True
                 incident_id = create_incident_id()
                 creation_counter = 0
                 send_create_incident(time.time() * 1000)
