@@ -12,7 +12,6 @@ from flask import Flask, request
 # Import, Info & Setup 
 ##### : -Import video file
 #       -Load YOLO
-#       -Create a list to store the results
 #       -Get Video info
 #       -Initialize the VideoWriter object
 #       -Create incident variables and thresholds
@@ -25,9 +24,6 @@ video = cv2.VideoCapture('/Users/ben/Downloads/test_video_2_29s.mp4')
 #___ Load YOLO ___#
 #model = YOLO('yolov8s.pt')
 model = YOLO('model.pt')
-
-#___ Create a list to store the results ___#
-results = []
 
 #___ Initialize the VideoWriter object ___#
 fourcc = cv2.VideoWriter_fourcc(*'avc1')  # For .mp4
@@ -200,11 +196,8 @@ def is_incident_frame(result):
     # If there are predictions in the frame:
     for pred in result:
         for box in pred.boxes:
-            x1, y1, x2, y2 = box.xyxy[0].cpu().numpy()
-            conf = box.conf.cpu().numpy()[0]  # Extract scalar from array
             cls = box.cls.cpu().numpy()[0]  # Extract scalar from array
-            x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)
-            label = f'{model.names[int(cls)]} {conf:.2f}'
+            label = f'{model.names[int(cls)]}'
             # If one of the predictions is not "full safety", it is an incident frame
             if label != 'person_with_full_safety':
                 is_incident = True
@@ -262,7 +255,6 @@ def check_image_upload():
 #-------------------------------------------------------------#
 # Main Loop
 ##### : - Loop through the video and run the model
-#       - Save the results in a list
 #       - Draw Bounding Boxes
 #       - Save the video
 #-------------------------------------------------------------#
@@ -287,8 +279,6 @@ def main_loop():
         frame = preprocessing(bgr_frame)
         # Run the model
         single_result = inference(model, frame)
-        # Append the result
-        results.append(single_result)
         # Draw the bounding boxes
         bgr_frame_output = draw_bounding_boxes(bgr_frame, single_result)
         # Save the video (in current directory of termial)
