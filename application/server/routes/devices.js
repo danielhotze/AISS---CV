@@ -63,12 +63,18 @@ router.delete('/devices/:deviceId', async (req, res) => {
 router.get('/devices/connect/:deviceId', async (req, res) => {
   const { deviceId } = req.params;
   try {
-    const device = await Device.find({id: deviceId});
+    console.log('Received device_connect request');
+    const device = await Device.findOne({id: deviceId});
     if (!device) {
       return res.status(404).json({ error: 'Cannot ping Device - Device not found' });
     }
-    const response = await axios.get(`http://${device.ip}:5000/ping?deviceId=${device.id}`, { timeout: 5000 });
+    console.log(`Sending ping-request to ${device.ip} for device ${device.id}`);
+
+    const response = await axios.get(`http://${device.ip}:5000/ping/${device.id}`, { timeout: 5000 });
     if (response.status === 200) {
+      device.status = 'Active';
+      await device.save();
+
       console.log(`Device ${device.ip} (${device.name}) is active.`);
       res.json({ message: `Device ${device.ip} (${device.name}) is now active.`})
     }

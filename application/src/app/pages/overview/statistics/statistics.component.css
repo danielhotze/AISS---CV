@@ -12,6 +12,11 @@
 .chart {
   grid-area: chart;
 }
+.chart:has(.mat-spinner) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .stats {
   grid-area: stats;
   display: flex;

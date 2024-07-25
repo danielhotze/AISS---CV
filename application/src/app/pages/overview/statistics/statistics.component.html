@@ -8,7 +8,11 @@
       [stroke]="chartOptions.stroke!" [markers]="chartOptions.markers!"
       [tooltip]="chartOptions.tooltip!"></apx-chart>
   } @else {
-    <mat-spinner></mat-spinner>
+    @if (filteredIncidents.length === 0) {
+      <span>There are no incidents to display yet.</span>
+    } @else {
+      <mat-spinner></mat-spinner>
+    }
   }
 </div>
 <div class="stats">

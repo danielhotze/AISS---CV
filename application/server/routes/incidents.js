@@ -12,10 +12,17 @@ router.post('/incidents', async (req, res) => {
   try {
     const { id, timestamp, deviceID, incidentType } = req.body;
 
+    console.log('Received create incident request:', req.body);
+
+    const new_timestamp = new Date(timestamp);
+    if (isNaN(new_timestamp)) {
+      throw new Error('Invalid timestamp format');
+    }
+
     const incident = new Incident({
       id: id,
-      timestamp_start: new Date(timestamp),
-      timestamp_end: new Date(timestamp),
+      timestamp_start: new_timestamp,
+      timestamp_end: new_timestamp,
       deviceID: deviceID,
       incidentType: Array.isArray(incidentType) ? incidentType : [incidentType],
     });

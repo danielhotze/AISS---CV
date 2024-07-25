@@ -67,7 +67,7 @@ const checkDeviceStatus = async () => {
     const devices = await Device.find({ status: 'Active' });
     for(const device of devices) {
       try {
-        const response = await axios.get(`http://${device.ip}:5000/ping?deviceId=${device.id}`, { timeout: 5000 });
+        const response = await axios.get(`http://${device.ip}:5000/ping/${device.id}`, { timeout: 5000 });
         if (response.status === 200) {
           console.log(`Device ${device.ip} (${device.name}) is active.`);
           res.json({ message: `Device ${device.ip} (${device.name}) is now active.`})

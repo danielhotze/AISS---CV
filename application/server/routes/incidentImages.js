@@ -15,7 +15,7 @@ module.exports = (upload) => {
 
       const incidentImage = new IncidentImage({
         name: name,
-        timestamp: timestamp,
+        timestamp: new Date(Number(timestamp)),
         incidentID: incidentID,
       });
 
