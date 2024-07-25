@@ -80,8 +80,11 @@
 }
 .incident_type {
   color: var(--color-red);
+  overflow: hidden;
+  max-width: 100%;
+  text-wrap: wrap;
 }
-.incident_content p span {
+.incident_content p span,  .incident_type span {
   color: var(--color-text-tertiary);
   font-weight: 600;
 }

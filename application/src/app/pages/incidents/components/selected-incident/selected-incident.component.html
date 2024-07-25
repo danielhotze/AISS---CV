@@ -24,7 +24,12 @@
     <p><span>ID:</span> {{selected.incident.id}}</p>
     <p><span>Start:</span> {{format(selected.incident.timestamp_start)}}</p>
     <p><span>End:</span> {{format(selected.incident.timestamp_end)}}</p>
-    <p class="incident_type"><span>Type:</span> {{selected.incident.incidentType}}</p>
+    <div class="incident_type">
+      <span>Type:</span>
+      @for (type of selected.incident.incidentType; track $index) {
+        {{type + ', '}}
+      }
+    </div>
     <div class="incident_icons">
       <!-- Display images of missing safety equipment -->
       @if (selected.incident.incidentType.includes('person_without_safety')) {

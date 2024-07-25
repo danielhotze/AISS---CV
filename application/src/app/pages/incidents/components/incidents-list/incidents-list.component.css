@@ -10,8 +10,8 @@
 }
 
 .incident_item {
-  width: 700px;
-  max-width: 100%;
+  width: 850px;
+  max-width: 90%;
   height: fit-content;
   background-color: var(--color-surface-elevated);
   box-shadow: 0 4px 12px 0 rgba(0, 0, 0, .35);
@@ -27,6 +27,10 @@
 }
 .incident_item.selected {
   outline: 3px solid var(--color-red);
+}
+.incident-type {
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .incident_content {
